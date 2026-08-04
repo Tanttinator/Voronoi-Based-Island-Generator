@@ -1,0 +1,3 @@
+[submodule "Assets/Modules/Ida-Library"]
+	path = Assets/Modules/Ida-Library
+	url = git@github.com:Studio-Ida/Ida-Library.git
