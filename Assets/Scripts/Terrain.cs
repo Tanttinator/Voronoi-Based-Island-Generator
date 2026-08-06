@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using StudioIda.Math;
 
 public class Terrain : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class Terrain : MonoBehaviour
         filter.mesh = mesh;
     }
 
-    Vector3 CellToWorldPoint(Vector2 point)
+    Vector3 CellToWorldPoint(Point point)
     {
         return new Vector3(point.x, 0, point.y);
     }
