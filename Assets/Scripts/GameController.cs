@@ -19,21 +19,19 @@ public class GameController : MonoBehaviour
         Point center = new Point(minX + maxX, minY + maxY);
 
         Point[] points = PoissonDisc.SamplePoints(area, 0.5f);
-        DCEL dcel = Delaunay.Triangulate(points);
-        Polygon[] cells = Voronoi.FromDelaunay(dcel, area);
 
-        Tile[] tiles = new Tile[cells.Length];
-        for (int i = 0; i < cells.Length; i++)
+        Tile[] tiles = new Tile[points.Length];
+        for (int i = 0; i < points.Length; i++)
         {
-            Polygon polygon = cells[i];
+            Point position = points[i];
             tiles[i] = new Tile
             {
-                IsWater = Point.DistanceSqr(center, polygon.Center) > 16,
-                Shape = polygon
+                Position = position,
+                IsWater = Point.DistanceSqr(center, position) > 16
             };
         }
 
-        terrain.GenerateMesh(tiles);
+        terrain.GenerateMesh(tiles, area);
     }
 
     void Start()

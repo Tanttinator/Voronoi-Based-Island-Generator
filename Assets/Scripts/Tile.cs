@@ -3,6 +3,6 @@ using UnityEngine;
 
 public class Tile
 {
+    public Point Position;
     public bool IsWater;
-    public Polygon Shape;
 }
