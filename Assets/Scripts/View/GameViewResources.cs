@@ -5,4 +5,5 @@ using UnityEngine;
 public class GameViewResources
 {
     public Terrain Terrain;
+    public GameObject BuildingPrefab;
 }

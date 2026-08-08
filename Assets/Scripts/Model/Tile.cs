@@ -5,4 +5,5 @@ public class Tile
 {
     public Point Position;
     public bool IsWater;
+    public bool HasBuilding;
 }

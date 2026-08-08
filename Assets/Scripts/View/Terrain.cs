@@ -9,8 +9,8 @@ public class Terrain : MonoBehaviour
     [SerializeField] MeshCollider tileCollider;
     [SerializeField] LineRenderer tileOutline;
 
-    Dictionary<Tile, TileView> tilesMap = new Dictionary<Tile, TileView>();
-    Dictionary<MeshCollider, Tile> colliderMap = new Dictionary<MeshCollider, Tile>();
+    public TileView[] Tiles { get; private set; }
+    Dictionary<MeshCollider, int> colliderMap = new Dictionary<MeshCollider, int>();
 
     MeshFilter filter;
 
@@ -19,9 +19,10 @@ public class Terrain : MonoBehaviour
         DCEL dcel = Delaunay.Triangulate(tiles.Select(tile => tile.Position).ToArray());
         Polygon[] cells = Voronoi.FromDelaunay(dcel, area);
 
+        Tiles = new TileView[tiles.Length];
         for (int i = 0; i < tiles.Length; i++)
         {
-            tilesMap[tiles[i]] = new TileView(cells[i]);
+            Tiles[i] = new TileView(cells[i]);
         }
 
         Mesh mesh = new Mesh();
@@ -30,9 +31,10 @@ public class Terrain : MonoBehaviour
         List<int> indices = new List<int>();
         List<Color> colors = new List<Color>();
 
-        foreach (Tile tile in tiles)
+        for (int i = 0; i < tiles.Length; i++)
         {
-            TileView view = tilesMap[tile];
+            Tile tile = tiles[i];
+            TileView view = Tiles[i];
 
             Mesh colliderMesh = new Mesh();
             List<Vector3> colliderVertices = new List<Vector3>();
@@ -40,9 +42,9 @@ public class Terrain : MonoBehaviour
 
             Color color = tile.IsWater ? Color.blue : Color.green;
 
-            for (int i = 0; i < view.Triangulation.Length; i++)
+            for (int j = 0; j < view.Triangulation.Length; j++)
             {
-                Triangle triangle = view.Triangulation[i];
+                Triangle triangle = view.Triangulation[j];
                 int startIndex = vertices.Count;
 
                 Vector3 a = CellToWorldPoint(triangle.a);
@@ -65,9 +67,9 @@ public class Terrain : MonoBehaviour
                 colliderVertices.Add(b);
                 colliderVertices.Add(c);
 
-                colliderIndices.Add(i * 3);
-                colliderIndices.Add(i * 3 + 1);
-                colliderIndices.Add(i * 3 + 2);
+                colliderIndices.Add(j * 3);
+                colliderIndices.Add(j * 3 + 1);
+                colliderIndices.Add(j * 3 + 2);
             }
 
             colliderMesh.vertices = colliderVertices.ToArray();
@@ -76,7 +78,7 @@ public class Terrain : MonoBehaviour
             MeshCollider collider = Instantiate(tileCollider, transform);
             collider.sharedMesh = colliderMesh;
 
-            colliderMap[collider] = tile;
+            colliderMap[collider] = i;
         }
 
         mesh.vertices = vertices.ToArray();
@@ -87,14 +89,14 @@ public class Terrain : MonoBehaviour
         filter.mesh = mesh;
     }
 
-    public Tile GetCollidedTile(MeshCollider collider)
+    public int GetCollidedTile(MeshCollider collider)
     {
         return colliderMap[collider];
     }
 
-    public void ShowTileOutline(Tile tile)
+    public void ShowTileOutline(int tileId)
     {
-        TileView view = tilesMap[tile];
+        TileView view = Tiles[tileId];
         tileOutline.positionCount = view.Shape.Corners.Length;
         tileOutline.SetPositions(view.Shape.Corners.Select(p => new Vector3(p.x, 0.01f, p.y)).ToArray());
     }

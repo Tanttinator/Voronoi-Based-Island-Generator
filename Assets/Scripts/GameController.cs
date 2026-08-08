@@ -29,11 +29,20 @@ public class GameController
 
     public void Update()
     {
-        Tile tile = view.GetHoveredTile();
-        if (tile != null)
-            view.Terrain.ShowTileOutline(tile);
+        int tileId = view.GetHoveredTile();
+        if (tileId != -1)
+            view.Terrain.ShowTileOutline(tileId);
         else
             view.Terrain.HideTileOutline();
+
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+            ProcessCommand(new PlaceBuildingCommand(tileId));
+    }
+
+    void ProcessCommand(GameCommand command)
+    {
+        GameEvent[] events = command.Execute(model);
+        view.ProcessEvents(events);
     }
 
     Tile[] GenerateMap(Rectangle area)
