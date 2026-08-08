@@ -302,12 +302,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 138714228}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0dabe751504fda841a49d3569066d06b, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b1df376d53c21247a693f2f7d7e5f2b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameController
-  cellMarker: {fileID: 9059944459056971400, guid: 18b03311baefe7e4fad6d0471d1cdb72, type: 3}
-  edgeMarker: {fileID: 4460905838963216584, guid: a7657d5d46f2e1b43af4a2e1e37ed6b4, type: 3}
-  terrain: {fileID: 1164302794}
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  viewResources:
+    Terrain: {fileID: 1164302794}
 --- !u!1 &1154736639
 GameObject:
   m_ObjectHideFlags: 0
