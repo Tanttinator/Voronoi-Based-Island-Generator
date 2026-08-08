@@ -308,6 +308,7 @@ MonoBehaviour:
   viewResources:
     Terrain: {fileID: 1164302794}
     BuildingPrefab: {fileID: 8721775913174080617, guid: f5249057e57da9b4a89812bfb51b7cc8, type: 3}
+    TreePrefab: {fileID: 1624494266761835998, guid: 9462d979b259b27418abd0443de275b7, type: 3}
 --- !u!1 &1154736639
 GameObject:
   m_ObjectHideFlags: 0

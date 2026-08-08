@@ -7,11 +7,13 @@ public class GameView
     public Terrain Terrain { get; private set; }
 
     GameObject buildingPrefab;
+    GameObject treePrefab;
 
     public GameView(GameViewResources resources)
     {
         Terrain = resources.Terrain;
         buildingPrefab = resources.BuildingPrefab;
+        treePrefab = resources.TreePrefab;
 
         Terrain.HideTileOutline();
     }
@@ -32,6 +34,21 @@ public class GameView
     public void GenerateTerrain(Map map)
     {
         Terrain.GenerateMesh(map.Tiles, map.Area);
+        for (int i = 0; i < map.Tiles.Length; i++)
+        {
+            if (map.Tiles[i].IsForest)
+            {
+                TileView tile = Terrain.Tiles[i];
+
+                for (int j = 0; j < 20; j++)
+                {
+                    Point position = tile.GetRandomPointOnTile();
+
+                    GameObject tree = GameObject.Instantiate(treePrefab, Terrain.transform);
+                    tree.transform.position = new Vector3(position.x, 0, position.y);
+                }
+            }
+        }
     }
 
     public int GetHoveredTile()

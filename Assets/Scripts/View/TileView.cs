@@ -1,3 +1,4 @@
+using System.Linq;
 using StudioIda.Math;
 using UnityEngine;
 
@@ -10,5 +11,25 @@ public class TileView
     {
         Shape = shape;
         Triangulation = EarClipping.TriangulatePolygon(shape);
+    }
+
+    public Point GetRandomPointOnTile()
+    {
+        float totalArea = Triangulation.Select(tri => tri.Area).Aggregate((a, b) => a + b);
+        float[] ratios = Triangulation.Select(tri => tri.Area / totalArea).ToArray();
+
+        float random = Random.value;
+        for (int i = 0; i < Triangulation.Length; i++)
+        {
+            if (random < ratios[i])
+            {
+                Triangle triangle = Triangulation[i];
+                return Trigonometry.RandomPointInTriangle(triangle);
+            }
+
+            random -= ratios[i];
+        }
+
+        return new Point(-1, -1);
     }
 }

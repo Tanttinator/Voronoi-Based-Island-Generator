@@ -6,4 +6,5 @@ public class GameViewResources
 {
     public Terrain Terrain;
     public GameObject BuildingPrefab;
+    public GameObject TreePrefab;
 }

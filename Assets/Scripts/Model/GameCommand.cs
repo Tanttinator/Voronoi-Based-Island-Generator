@@ -20,7 +20,7 @@ public class PlaceBuildingCommand : GameCommand
 
         Tile tile = state.Map.Tiles[tileId];
 
-        if (tile.IsWater || tile.HasBuilding) return new GameEvent[0];
+        if (tile.IsWater || tile.IsForest || tile.HasBuilding) return new GameEvent[0];
 
         tile.HasBuilding = true;
 

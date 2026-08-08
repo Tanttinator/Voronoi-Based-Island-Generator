@@ -53,10 +53,13 @@ public class GameController
         for (int i = 0; i < points.Length; i++)
         {
             Point position = points[i];
+            bool isWater = Point.DistanceSqr(area.Center, position) > 16;
+            bool isForest = !isWater && Random.value < 0.5f;
             tiles[i] = new Tile
             {
                 Position = position,
-                IsWater = Point.DistanceSqr(area.Center, position) > 16
+                IsWater = isWater,
+                IsForest = isForest
             };
         }
 
