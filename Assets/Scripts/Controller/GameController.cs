@@ -2,14 +2,23 @@ using UnityEngine;
 using StudioIda.Graphs;
 using StudioIda.Math;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using System.Collections;
+using Unity.VisualScripting;
 
 public class GameController
 {
+    GameConfig config;
+
     Game model;
     GameView view;
 
-    public GameController(GameViewResources viewResources)
+    Queue<GameSequence> sequenceQueue = new Queue<GameSequence>();
+    WaitForEndOfFrame wait = new WaitForEndOfFrame();
+
+    public GameController(GameConfig config, GameViewResources viewResources)
     {
+        this.config = config;
         view = new GameView(viewResources);
     }
 
@@ -47,10 +56,35 @@ public class GameController
         }
     }
 
+    public IEnumerator PlaySequences()
+    {
+        while (true)
+        {
+            if (sequenceQueue.Count > 0)
+            {
+                GameSequence sequence = sequenceQueue.Dequeue();
+                yield return sequence.Display(view, config);
+            }
+            yield return wait;
+        }
+    }
+
     void ProcessCommand(GameCommand command)
     {
-        GameEvent[] events = command.Execute(model);
-        view.ProcessEvents(events);
+        GameEvent[] events = command.Execute(model, config);
+
+        foreach (GameEvent evt in events)
+        {
+            switch (evt)
+            {
+                case BuildingPlacedEvent buildingPlaced:
+                    sequenceQueue.Enqueue(new PlaceBuildingSequence(buildingPlaced.TileId));
+                    break;
+                case WoodCountChangedEvent woodChanged:
+                    sequenceQueue.Enqueue(new ChangeWoodCountSequence(woodChanged.NewCount));
+                    break;
+            }
+        }
     }
 
     Tile[] GenerateMap(Rectangle area)

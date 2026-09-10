@@ -7,7 +7,6 @@ public class GameView
     public HUDView HUD { get; private set; }
     public Terrain Terrain { get; private set; }
 
-    GameObject buildingPrefab;
     GameObject treePrefab;
 
     public GameView(GameViewResources resources)
@@ -18,7 +17,6 @@ public class GameView
         Terrain = resources.Terrain;
         Terrain.HideTileOutline();
 
-        buildingPrefab = resources.BuildingPrefab;
         treePrefab = resources.TreePrefab;
     }
 
@@ -28,25 +26,7 @@ public class GameView
         GenerateTerrain(game.Map);
     }
 
-    public void ProcessEvents(GameEvent[] events)
-    {
-        foreach (GameEvent evt in events)
-        {
-            switch (evt)
-            {
-                case BuildingPlacedEvent buildingPlaced:
-                    TileView tile = Terrain.Tiles[buildingPlaced.TileId];
-                    Point center = tile.Shape.Center;
-                    GameObject.Instantiate(buildingPrefab, new Vector3(center.x, 0f, center.y), Quaternion.identity);
-                    break;
-                case WoodCountChangedEvent woodChanged:
-                    HUD.SetWoodCount(woodChanged.NewCount);
-                    break;
-            }
-        }
-    }
-
-    public void GenerateTerrain(Map map)
+    void GenerateTerrain(Map map)
     {
         Terrain.GenerateMesh(map.Tiles, map.Area);
         for (int i = 0; i < map.Tiles.Length; i++)

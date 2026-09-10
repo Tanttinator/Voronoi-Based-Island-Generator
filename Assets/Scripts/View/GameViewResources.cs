@@ -10,6 +10,5 @@ public class GameViewResources
     public Terrain Terrain;
 
     [Header("Prefabs")]
-    public GameObject BuildingPrefab;
     public GameObject TreePrefab;
 }
