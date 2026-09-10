@@ -22,9 +22,9 @@ public class GameController
         Rectangle area = new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
 
         Tile[] tiles = GenerateMap(area);
-
         model = new Game(tiles, area);
-        view.GenerateTerrain(model.Map);
+
+        view.Initialize(model);
     }
 
     public void Update()
@@ -36,7 +36,15 @@ public class GameController
             view.Terrain.HideTileOutline();
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
-            ProcessCommand(new PlaceBuildingCommand(tileId));
+        {
+            if (tileId == -1) return;
+
+            Tile tile = model.Map.Tiles[tileId];
+            if (tile.IsForest)
+                ProcessCommand(new GatherWoodCommand(tileId));
+            else
+                ProcessCommand(new PlaceBuildingCommand(tileId));
+        }
     }
 
     void ProcessCommand(GameCommand command)

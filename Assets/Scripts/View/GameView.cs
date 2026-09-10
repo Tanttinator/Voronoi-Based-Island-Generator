@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class GameView
 {
+    public HUDView HUD { get; private set; }
     public Terrain Terrain { get; private set; }
 
     GameObject buildingPrefab;
@@ -11,22 +12,36 @@ public class GameView
 
     public GameView(GameViewResources resources)
     {
+        HUD = new HUDView(resources.HUD.rootVisualElement);
+        HUD.SetWoodCount(0);
+
         Terrain = resources.Terrain;
+        Terrain.HideTileOutline();
+
         buildingPrefab = resources.BuildingPrefab;
         treePrefab = resources.TreePrefab;
+    }
 
-        Terrain.HideTileOutline();
+    public void Initialize(Game game)
+    {
+        HUD.SetWoodCount(game.WoodCount);
+        GenerateTerrain(game.Map);
     }
 
     public void ProcessEvents(GameEvent[] events)
     {
         foreach (GameEvent evt in events)
         {
-            if (evt is BuildingPlacedEvent buildingPlaced)
+            switch (evt)
             {
-                TileView tile = Terrain.Tiles[buildingPlaced.TileId];
-                Point center = tile.Shape.Center;
-                GameObject.Instantiate(buildingPrefab, new Vector3(center.x, 0f, center.y), Quaternion.identity);
+                case BuildingPlacedEvent buildingPlaced:
+                    TileView tile = Terrain.Tiles[buildingPlaced.TileId];
+                    Point center = tile.Shape.Center;
+                    GameObject.Instantiate(buildingPrefab, new Vector3(center.x, 0f, center.y), Quaternion.identity);
+                    break;
+                case WoodCountChangedEvent woodChanged:
+                    HUD.SetWoodCount(woodChanged.NewCount);
+                    break;
             }
         }
     }
