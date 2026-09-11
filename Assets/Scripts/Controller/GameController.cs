@@ -18,7 +18,7 @@ public class GameController
     public GameController(GameConfig config, GameViewResources viewResources)
     {
         this.config = config;
-        model = new GameModel();
+        model = new GameModel(config);
         view = new GameView(viewResources);
 
         input = new InputProvider();
@@ -42,39 +42,37 @@ public class GameController
     public void Update()
     {
         input.Update();
-        currentInteractionMode.Update();
+
+        GameCommand command = currentInteractionMode.Update();
+        GameEvent[] inputEvents = command.Execute(model.State, config);
+        ProcessEvents(inputEvents);
+
+        GameEvent[] simulationEvents = model.Simulate(Time.deltaTime);
+        ProcessEvents(simulationEvents);
     }
 
     void SetInteractionMode(InteractionMode mode)
     {
         mode.State = model.State;
         mode.View = view;
-        mode.SendCommand = ProcessCommand;
         mode.Input = input;
 
         currentInteractionMode = mode;
     }
 
-    void ProcessCommand(GameCommand command)
+    void ProcessEvents(GameEvent[] events)
     {
-        GameEvent[] events = command.Execute(model.State, config);
-
         foreach (GameEvent evt in events)
         {
-            ProcessEvent(evt);
-        }
-    }
-
-    void ProcessEvent(GameEvent evt)
-    {
-        switch (evt)
-        {
-            case BuildingPlacedEvent buildingPlaced:
-                sequenceQueue.Enqueue(new PlaceBuildingSequence(buildingPlaced.TileId));
-                break;
-            case WoodCountChangedEvent woodChanged:
-                sequenceQueue.Enqueue(new ChangeWoodCountSequence(woodChanged.NewCount));
-                break;
+            switch (evt)
+            {
+                case BuildingPlacedEvent buildingPlaced:
+                    sequenceQueue.Enqueue(new PlaceBuildingSequence(buildingPlaced.TileId));
+                    break;
+                case WoodCountChangedEvent woodChanged:
+                    sequenceQueue.Enqueue(new ChangeWoodCountSequence(woodChanged.NewCount));
+                    break;
+            }
         }
     }
 

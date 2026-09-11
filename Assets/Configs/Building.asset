@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Building
   m_EditorClassIdentifier: Assembly-CSharp::BuildingConfig
   WoodCost: 50
+  WorkDuration: 5
   Prefab: {fileID: 8721775913174080617, guid: f5249057e57da9b4a89812bfb51b7cc8, type: 3}

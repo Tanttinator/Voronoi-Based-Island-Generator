@@ -1,8 +1,13 @@
 using UnityEngine;
 
-public abstract class GameCommand
+public class GameCommand
 {
-    public abstract GameEvent[] Execute(GameState state, GameConfig config);
+    public static readonly GameCommand None = new GameCommand();
+
+    public virtual GameEvent[] Execute(GameState state, GameConfig config)
+    {
+        return new GameEvent[0];
+    }
 }
 
 public class PlaceBuildingCommand : GameCommand
@@ -24,6 +29,7 @@ public class PlaceBuildingCommand : GameCommand
         if (tile.IsWater || tile.IsForest || tile.HasBuilding || !state.HasWood(woodCost)) return new GameEvent[0];
 
         tile.HasBuilding = true;
+        state.AddBuilding();
         state.ChangeWoodCount(-woodCost);
 
         return new GameEvent[]

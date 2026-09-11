@@ -6,18 +6,17 @@ public abstract class InteractionMode
 {
     public GameState State;
     public GameView View;
-    public Action<GameCommand> SendCommand;
     public InputProvider Input;
 
-    public virtual void Update()
+    public virtual GameCommand Update()
     {
-
+        return GameCommand.None;
     }
 }
 
 public class DefaultInteractionMode : InteractionMode
 {
-    public override void Update()
+    public override GameCommand Update()
     {
         int tileId = View.GetHoveredTile();
         if (tileId != -1)
@@ -27,13 +26,15 @@ public class DefaultInteractionMode : InteractionMode
 
         if (Input.Clicked)
         {
-            if (tileId == -1) return;
+            if (tileId == -1) return GameCommand.None;
 
             TileState tile = State.Map.Tiles[tileId];
             if (tile.IsForest)
-                SendCommand(new GatherWoodCommand(tileId));
+                return new GatherWoodCommand(tileId);
             else
-                SendCommand(new PlaceBuildingCommand(tileId));
+                return new PlaceBuildingCommand(tileId);
         }
+
+        return GameCommand.None;
     }
 }
