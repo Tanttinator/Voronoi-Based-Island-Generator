@@ -14,7 +14,7 @@ public class Terrain : MonoBehaviour
 
     MeshFilter filter;
 
-    public void GenerateMesh(Tile[] tiles, Rectangle area)
+    public void GenerateMesh(TileState[] tiles, Rectangle area)
     {
         DCEL dcel = Delaunay.Triangulate(tiles.Select(tile => tile.Position).ToArray());
         Polygon[] cells = Voronoi.FromDelaunay(dcel, area);
@@ -33,7 +33,7 @@ public class Terrain : MonoBehaviour
 
         for (int i = 0; i < tiles.Length; i++)
         {
-            Tile tile = tiles[i];
+            TileState tile = tiles[i];
             TileView view = Tiles[i];
 
             Mesh colliderMesh = new Mesh();

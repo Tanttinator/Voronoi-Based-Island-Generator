@@ -20,13 +20,13 @@ public class GameView
         treePrefab = resources.TreePrefab;
     }
 
-    public void Initialize(Game game)
+    public void Initialize(GameState state)
     {
-        HUD.SetWoodCount(game.WoodCount);
-        GenerateTerrain(game.Map);
+        HUD.SetWoodCount(state.WoodCount);
+        GenerateTerrain(state.Map);
     }
 
-    void GenerateTerrain(Map map)
+    void GenerateTerrain(MapState map)
     {
         Terrain.GenerateMesh(map.Tiles, map.Area);
         for (int i = 0; i < map.Tiles.Length; i++)

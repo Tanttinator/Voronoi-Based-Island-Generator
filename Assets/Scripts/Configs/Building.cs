@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Building", menuName = "Configs/Building")]
-public class BuildingConfig : ScriptableObject
+public class Building : ScriptableObject
 {
     [Header("Model")]
     public int WoodCost;

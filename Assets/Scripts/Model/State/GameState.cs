@@ -1,14 +1,14 @@
 using StudioIda.Math;
 using UnityEngine;
 
-public class Game
+public class GameState
 {
-    public Map Map { get; private set; }
+    public MapState Map { get; private set; }
     public int WoodCount { get; private set; }
 
-    public Game(Tile[] tiles, Rectangle area)
+    public GameState()
     {
-        Map = new Map(tiles, area);
+        Map = new MapState();
     }
 
     public bool HasWood(int amount) => WoodCount >= amount;

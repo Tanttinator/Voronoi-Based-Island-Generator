@@ -4,5 +4,5 @@ using UnityEngine;
 public class GameConfig : ScriptableObject
 {
     public int WoodHarvestAmount;
-    public BuildingConfig Building;
+    public Building Building;
 }

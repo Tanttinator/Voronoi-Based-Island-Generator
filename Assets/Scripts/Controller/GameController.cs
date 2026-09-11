@@ -1,17 +1,16 @@
 using UnityEngine;
-using StudioIda.Graphs;
 using StudioIda.Math;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System.Collections;
-using Unity.VisualScripting;
 
 public class GameController
 {
     GameConfig config;
-
-    Game model;
+    GameModel model;
     GameView view;
+
+    InputProvider input;
+    InteractionMode currentInteractionMode;
 
     Queue<GameSequence> sequenceQueue = new Queue<GameSequence>();
     WaitForEndOfFrame wait = new WaitForEndOfFrame();
@@ -19,40 +18,62 @@ public class GameController
     public GameController(GameConfig config, GameViewResources viewResources)
     {
         this.config = config;
+        model = new GameModel();
         view = new GameView(viewResources);
+
+        input = new InputProvider();
     }
 
     public void StartGame()
     {
-        float minX = -5;
-        float minY = -5;
-        float maxX = 5;
-        float maxY = 5;
+        float minX = -5; float maxX = 5;
+        float minY = -5; float maxY = 5;
         Rectangle area = new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
+        model.State.Map.SetArea(area);
 
-        Tile[] tiles = GenerateMap(area);
-        model = new Game(tiles, area);
+        TileState[] tiles = WorldGeneration.GenerateTiles(area);
+        model.State.Map.SetTiles(tiles);
 
-        view.Initialize(model);
+        view.Initialize(model.State);
+
+        SetInteractionMode(new DefaultInteractionMode());
     }
 
     public void Update()
     {
-        int tileId = view.GetHoveredTile();
-        if (tileId != -1)
-            view.Terrain.ShowTileOutline(tileId);
-        else
-            view.Terrain.HideTileOutline();
+        currentInteractionMode.Update();
+    }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+    void SetInteractionMode(InteractionMode mode)
+    {
+        mode.State = model.State;
+        mode.View = view;
+        mode.SendCommand = ProcessCommand;
+        mode.Input = input;
+
+        currentInteractionMode = mode;
+    }
+
+    void ProcessCommand(GameCommand command)
+    {
+        GameEvent[] events = command.Execute(model.State, config);
+
+        foreach (GameEvent evt in events)
         {
-            if (tileId == -1) return;
+            ProcessEvent(evt);
+        }
+    }
 
-            Tile tile = model.Map.Tiles[tileId];
-            if (tile.IsForest)
-                ProcessCommand(new GatherWoodCommand(tileId));
-            else
-                ProcessCommand(new PlaceBuildingCommand(tileId));
+    void ProcessEvent(GameEvent evt)
+    {
+        switch (evt)
+        {
+            case BuildingPlacedEvent buildingPlaced:
+                sequenceQueue.Enqueue(new PlaceBuildingSequence(buildingPlaced.TileId));
+                break;
+            case WoodCountChangedEvent woodChanged:
+                sequenceQueue.Enqueue(new ChangeWoodCountSequence(woodChanged.NewCount));
+                break;
         }
     }
 
@@ -67,44 +88,5 @@ public class GameController
             }
             yield return wait;
         }
-    }
-
-    void ProcessCommand(GameCommand command)
-    {
-        GameEvent[] events = command.Execute(model, config);
-
-        foreach (GameEvent evt in events)
-        {
-            switch (evt)
-            {
-                case BuildingPlacedEvent buildingPlaced:
-                    sequenceQueue.Enqueue(new PlaceBuildingSequence(buildingPlaced.TileId));
-                    break;
-                case WoodCountChangedEvent woodChanged:
-                    sequenceQueue.Enqueue(new ChangeWoodCountSequence(woodChanged.NewCount));
-                    break;
-            }
-        }
-    }
-
-    Tile[] GenerateMap(Rectangle area)
-    {
-        Point[] points = PoissonDisc.SamplePoints(area, 0.5f);
-
-        Tile[] tiles = new Tile[points.Length];
-        for (int i = 0; i < points.Length; i++)
-        {
-            Point position = points[i];
-            bool isWater = Point.DistanceSqr(area.Center, position) > 16;
-            bool isForest = !isWater && Random.value < 0.5f;
-            tiles[i] = new Tile
-            {
-                Position = position,
-                IsWater = isWater,
-                IsForest = isForest
-            };
-        }
-
-        return tiles;
     }
 }

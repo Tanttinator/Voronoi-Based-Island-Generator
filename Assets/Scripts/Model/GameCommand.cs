@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class GameCommand
 {
-    public abstract GameEvent[] Execute(Game state, GameConfig config);
+    public abstract GameEvent[] Execute(GameState state, GameConfig config);
 }
 
 public class PlaceBuildingCommand : GameCommand
@@ -14,11 +14,11 @@ public class PlaceBuildingCommand : GameCommand
         this.tileId = tileId;
     }
 
-    public override GameEvent[] Execute(Game state, GameConfig config)
+    public override GameEvent[] Execute(GameState state, GameConfig config)
     {
         if (tileId == -1) return new GameEvent[0];
 
-        Tile tile = state.Map.Tiles[tileId];
+        TileState tile = state.Map.Tiles[tileId];
         int woodCost = config.Building.WoodCost;
 
         if (tile.IsWater || tile.IsForest || tile.HasBuilding || !state.HasWood(woodCost)) return new GameEvent[0];
@@ -43,11 +43,11 @@ public class GatherWoodCommand : GameCommand
         this.tileId = tileId;
     }
 
-    public override GameEvent[] Execute(Game state, GameConfig config)
+    public override GameEvent[] Execute(GameState state, GameConfig config)
     {
         if (tileId == -1) return new GameEvent[0];
 
-        Tile tile = state.Map.Tiles[tileId];
+        TileState tile = state.Map.Tiles[tileId];
 
         if (!tile.IsForest) return new GameEvent[0];
 
