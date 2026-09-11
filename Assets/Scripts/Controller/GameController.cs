@@ -41,6 +41,7 @@ public class GameController
 
     public void Update()
     {
+        input.Update();
         currentInteractionMode.Update();
     }
 
