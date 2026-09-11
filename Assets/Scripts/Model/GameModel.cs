@@ -15,6 +15,11 @@ public class GameModel
         simulation = new GameSimulation(State, config);
     }
 
+    public GameEvent[] ExecuteCommand(GameCommand command)
+    {
+        return command.Execute(State, config);
+    }
+
     public GameEvent[] Simulate(float dt)
     {
         return simulation.Advance(dt);

@@ -44,7 +44,7 @@ public class GameController
         input.Update();
 
         GameCommand command = currentInteractionMode.Update();
-        GameEvent[] inputEvents = command.Execute(model.State, config);
+        GameEvent[] inputEvents = model.ExecuteCommand(command);
         ProcessEvents(inputEvents);
 
         GameEvent[] simulationEvents = model.Simulate(Time.deltaTime);
