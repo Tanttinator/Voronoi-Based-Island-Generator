@@ -14,4 +14,5 @@ public class GameViewResources
 
     [Header("UI Templates")]
     public VisualTreeAsset ResourceCountTemplate;
+    public VisualTreeAsset ConstructionMenuItemTemplate;
 }

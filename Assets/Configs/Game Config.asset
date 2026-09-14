@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Game Config
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
   Wood: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
-  Building: {fileID: 11400000, guid: 39bcf34b791dfa145bf15ef2bd39ee41, type: 2}
+  Building: {fileID: 11400000, guid: 6b6a9e786f08e424889d254ccae222d3, type: 2}
+  Buildings:
+  - {fileID: 11400000, guid: 6b6a9e786f08e424889d254ccae222d3, type: 2}
+  - {fileID: 11400000, guid: 39bcf34b791dfa145bf15ef2bd39ee41, type: 2}
   DisplayResources:
   - {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
   - {fileID: 11400000, guid: bf0abb7573693b74b9d7fb573095869e, type: 2}

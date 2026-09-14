@@ -9,10 +9,12 @@ public abstract class GameSequence
 
 public class PlaceBuildingSequence : GameSequence
 {
+    Building building;
     int tileId;
 
-    public PlaceBuildingSequence(int tileId)
+    public PlaceBuildingSequence(Building building, int tileId)
     {
+        this.building = building;
         this.tileId = tileId;
     }
 
@@ -20,7 +22,7 @@ public class PlaceBuildingSequence : GameSequence
     {
         TileView tile = view.Terrain.Tiles[tileId];
         Point center = tile.Shape.Center;
-        GameObject.Instantiate(config.Building.Prefab, new Vector3(center.x, 0f, center.y), Quaternion.identity);
+        GameObject.Instantiate(building.Prefab, new Vector3(center.x, 0f, center.y), Quaternion.identity);
         yield return null;
     }
 }

@@ -17,7 +17,7 @@ public class GameSimulation
 
         foreach (BuildingState building in state.Buildings)
         {
-            Job job = config.Building.Job;
+            Job job = building.Type.Job;
             building.AdvanceWorkProgress(dt);
             if (building.WorkProgress >= job.Duration)
             {

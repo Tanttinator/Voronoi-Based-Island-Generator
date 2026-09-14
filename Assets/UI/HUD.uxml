@@ -1,7 +1,18 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement name="Root" style="flex-grow: 1;">
-        <ui:VisualElement name="ToolBar" style="flex-grow: 0; height: auto; background-color: rgb(51, 51, 51); flex-shrink: 1;">
-            <ui:VisualElement name="Resources" style="flex-grow: 1; flex-direction: row; justify-content: center;"/>
+        <ui:VisualElement name="Top" style="flex-grow: 0;">
+            <ui:VisualElement name="ToolBar" style="flex-grow: 1; height: auto; background-color: rgb(51, 51, 51); flex-shrink: 1;">
+                <ui:VisualElement name="Resources" style="flex-grow: 1; flex-direction: row; justify-content: center;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Center" style="flex-grow: 1;"/>
+        <ui:VisualElement name="Bottom" style="flex-grow: 0; flex-direction: row;">
+            <ui:VisualElement name="ConstructionMenu" style="flex-grow: 0; background-color: rgb(102, 102, 102); color: rgb(229, 229, 229);">
+                <ui:VisualElement name="Header" style="flex-grow: 1; background-color: rgb(51, 51, 51);">
+                    <ui:Label text="Select Building" name="" style="margin-right: 20px; margin-left: 20px; -unity-text-align: upper-center; font-size: 28px;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="Content" style="flex-grow: 1; min-height: 200px;"/>
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

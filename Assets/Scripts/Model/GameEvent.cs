@@ -7,6 +7,7 @@ public abstract class GameEvent
 
 public class BuildingPlacedEvent : GameEvent
 {
+    public Building Building;
     public int TileId;
 }
 

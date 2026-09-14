@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6e26bb521bbb3c43ba0b2bf74f26030, type: 3}
   m_Name: Quarry
   m_EditorClassIdentifier: Assembly-CSharp::Building
-  Cost: []
+  Cost:
+  - Resource: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
+    Amount: 50
   Job:
-    Duration: 0
+    Duration: 5
     Output:
-      Resource: {fileID: 0}
-      Amount: 0
-  Prefab: {fileID: 0}
+      Resource: {fileID: 11400000, guid: bf0abb7573693b74b9d7fb573095869e, type: 2}
+      Amount: 10
+  Prefab: {fileID: 8721775913174080617, guid: f5249057e57da9b4a89812bfb51b7cc8, type: 3}

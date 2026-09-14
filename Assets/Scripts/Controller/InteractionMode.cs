@@ -8,14 +8,31 @@ public abstract class InteractionMode
     public GameView View;
     public InputProvider Input;
 
+    public virtual void Start()
+    {
+
+    }
+
     public virtual GameCommand Update()
     {
         return GameCommand.None;
+    }
+
+    public virtual void End()
+    {
+
     }
 }
 
 public class DefaultInteractionMode : InteractionMode
 {
+    Building selectedBuilding = null;
+
+    public override void Start()
+    {
+        View.HUD.ConstructionMenu.OnBuildingSelected += OnBuildingSelected;
+    }
+
     public override GameCommand Update()
     {
         int tileId = View.GetHoveredTile();
@@ -31,10 +48,20 @@ public class DefaultInteractionMode : InteractionMode
             TileState tile = State.Map.Tiles[tileId];
             if (tile.IsForest)
                 return new GatherWoodCommand(tileId);
-            else
-                return new PlaceBuildingCommand(tileId);
+            else if (selectedBuilding != null)
+                return new PlaceBuildingCommand(selectedBuilding, tileId);
         }
 
         return GameCommand.None;
+    }
+
+    public override void End()
+    {
+        View.HUD.ConstructionMenu.OnBuildingSelected -= OnBuildingSelected;
+    }
+
+    void OnBuildingSelected(Building building)
+    {
+        selectedBuilding = building;
     }
 }

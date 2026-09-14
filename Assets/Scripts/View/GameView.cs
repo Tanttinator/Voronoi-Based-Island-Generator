@@ -11,9 +11,11 @@ public class GameView
 
     public GameView(GameViewResources resources, GameConfig config)
     {
-        HUD = new HUDView(resources.HUD.rootVisualElement, resources.ResourceCountTemplate);
+        HUD = new HUDView(resources.HUD.rootVisualElement, resources.ResourceCountTemplate, resources.ConstructionMenuItemTemplate);
         foreach (Resource resource in config.DisplayResources)
             HUD.CreateResourceCounter(resource);
+        foreach (Building building in config.Buildings)
+            HUD.ConstructionMenu.AddBuilding(building);
 
         Terrain = resources.Terrain;
         Terrain.HideTileOutline();

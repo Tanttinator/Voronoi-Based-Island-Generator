@@ -57,7 +57,9 @@ public class GameController
         mode.View = view;
         mode.Input = input;
 
+        currentInteractionMode?.End();
         currentInteractionMode = mode;
+        currentInteractionMode.Start();
     }
 
     void ProcessEvents(GameEvent[] events)
@@ -67,7 +69,7 @@ public class GameController
             switch (evt)
             {
                 case BuildingPlacedEvent buildingPlaced:
-                    sequenceQueue.Enqueue(new PlaceBuildingSequence(buildingPlaced.TileId));
+                    sequenceQueue.Enqueue(new PlaceBuildingSequence(buildingPlaced.Building, buildingPlaced.TileId));
                     break;
                 case ResourceAmountsChangedEvent resourcesChanged:
                     sequenceQueue.Enqueue(new ChangeResourceAmountSequence(resourcesChanged.NewAmounts));

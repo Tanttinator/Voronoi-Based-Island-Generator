@@ -13,10 +13,12 @@ public class GameCommand
 
 public class PlaceBuildingCommand : GameCommand
 {
+    Building building;
     int tileId;
 
-    public PlaceBuildingCommand(int tileId)
+    public PlaceBuildingCommand(Building building, int tileId)
     {
+        this.building = building;
         this.tileId = tileId;
     }
 
@@ -25,17 +27,17 @@ public class PlaceBuildingCommand : GameCommand
         if (tileId == -1) return new GameEvent[0];
 
         TileState tile = state.Map.Tiles[tileId];
-        ResourceStack[] cost = config.Building.Cost;
+        ResourceStack[] cost = building.Cost;
 
         if (tile.IsWater || tile.IsForest || tile.HasBuilding || !state.HasResources(cost)) return new GameEvent[0];
 
         tile.HasBuilding = true;
-        state.AddBuilding();
+        state.AddBuilding(building);
         state.RemoveResources(cost);
 
         return new GameEvent[]
         {
-            new BuildingPlacedEvent { TileId = tileId },
+            new BuildingPlacedEvent { Building = building, TileId = tileId },
             new ResourceAmountsChangedEvent { NewAmounts = cost.Select(stack => stack.Resource).Select(resource => new ResourceStack(resource, state.GetResource(resource))).ToArray() }
         };
     }

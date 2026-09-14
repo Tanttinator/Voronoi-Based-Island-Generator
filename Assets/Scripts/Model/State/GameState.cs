@@ -16,7 +16,7 @@ public class GameState
         Map = new MapState();
     }
 
-    public void AddBuilding() => buildings.Add(new BuildingState());
+    public void AddBuilding(Building building) => buildings.Add(new BuildingState(building));
 
     public int GetResource(Resource resource) => resources.GetValueOrDefault(resource);
     public void AddResource(ResourceStack stack) => resources[stack.Resource] = GetResource(stack.Resource) + stack.Amount;

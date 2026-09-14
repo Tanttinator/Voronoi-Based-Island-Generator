@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameConfig : ScriptableObject
 {
     public Resource Wood;
-    public Building Building;
+    public Building[] Buildings;
 
     [Header("View")]
     public Resource[] DisplayResources;
