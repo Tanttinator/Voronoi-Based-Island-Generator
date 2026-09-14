@@ -1,17 +1,33 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class HUDView
 {
-    Label woodCountLabel;
+    VisualElement resourcesContainer;
+    Dictionary<Resource, Label> resourceCounters = new Dictionary<Resource, Label>();
 
-    public HUDView(VisualElement root)
+    VisualTreeAsset resourceCountTemplate;
+
+    public IEnumerable<Resource> DisplayResources => resourceCounters.Keys;
+
+    public HUDView(VisualElement root, VisualTreeAsset resourceCountTemplate)
     {
-        woodCountLabel = root.Q<Label>("WoodCount");
+        resourcesContainer = root.Q<VisualElement>("Resources");
+        this.resourceCountTemplate = resourceCountTemplate;
     }
 
-    public void SetWoodCount(int count)
+    public void CreateResourceCounter(Resource resource)
     {
-        woodCountLabel.text = $"Wood: {count}";
+        TemplateContainer instance = resourceCountTemplate.Instantiate();
+        resourceCounters[resource] = instance.Q<Label>("ResourceCount");
+        resourcesContainer.Add(instance);
+    }
+
+    public bool HasCounterForResource(Resource resource) => resourceCounters.ContainsKey(resource);
+
+    public void UpdateResourceCounter(Resource resource, int count)
+    {
+        resourceCounters[resource].text = $"{resource.name}: {count}";
     }
 }

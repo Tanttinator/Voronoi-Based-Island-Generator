@@ -19,7 +19,7 @@ public class GameController
     {
         this.config = config;
         model = new GameModel(config);
-        view = new GameView(viewResources);
+        view = new GameView(viewResources, config);
 
         input = new InputProvider();
     }

@@ -11,4 +11,7 @@ public class GameViewResources
 
     [Header("Prefabs")]
     public GameObject TreePrefab;
+
+    [Header("UI Templates")]
+    public VisualTreeAsset ResourceCountTemplate;
 }

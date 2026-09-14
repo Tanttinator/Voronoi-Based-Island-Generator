@@ -9,10 +9,11 @@ public class GameView
 
     GameObject treePrefab;
 
-    public GameView(GameViewResources resources)
+    public GameView(GameViewResources resources, GameConfig config)
     {
-        HUD = new HUDView(resources.HUD.rootVisualElement);
-        HUD.SetWoodCount(0);
+        HUD = new HUDView(resources.HUD.rootVisualElement, resources.ResourceCountTemplate);
+        foreach (Resource resource in config.DisplayResources)
+            HUD.CreateResourceCounter(resource);
 
         Terrain = resources.Terrain;
         Terrain.HideTileOutline();
@@ -22,7 +23,8 @@ public class GameView
 
     public void Initialize(GameState state)
     {
-        //HUD.SetWoodCount(state.GetResource());
+        foreach (Resource resource in HUD.DisplayResources)
+            HUD.UpdateResourceCounter(resource, state.GetResource(resource));
         GenerateTerrain(state.Map);
     }
 

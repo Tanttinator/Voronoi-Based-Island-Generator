@@ -5,4 +5,7 @@ public class GameConfig : ScriptableObject
 {
     public Resource Wood;
     public Building Building;
+
+    [Header("View")]
+    public Resource[] DisplayResources;
 }

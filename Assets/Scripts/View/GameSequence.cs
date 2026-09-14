@@ -38,8 +38,8 @@ public class ChangeResourceAmountSequence : GameSequence
     {
         foreach (ResourceStack stack in newAmounts)
         {
-            if (stack.Resource == config.Wood)
-                view.HUD.SetWoodCount(stack.Amount);
+            if (view.HUD.HasCounterForResource(stack.Resource))
+                view.HUD.UpdateResourceCounter(stack.Resource, stack.Amount);
         }
         yield return null;
     }

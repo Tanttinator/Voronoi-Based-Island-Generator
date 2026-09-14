@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98fdf6b034ad804c898f0ce33ad0569, type: 3}
   m_Name: Game Config
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
-  WoodHarvestAmount: 10
+  Wood: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
   Building: {fileID: 11400000, guid: 39bcf34b791dfa145bf15ef2bd39ee41, type: 2}
+  DisplayResources:
+  - {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
+  - {fileID: 11400000, guid: bf0abb7573693b74b9d7fb573095869e, type: 2}
