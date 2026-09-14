@@ -10,8 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6e26bb521bbb3c43ba0b2bf74f26030, type: 3}
-  m_Name: Building
+  m_Name: Lumber Camp
   m_EditorClassIdentifier: Assembly-CSharp::BuildingConfig
-  WoodCost: 50
-  WorkDuration: 5
+  Cost:
+  - Resource: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
+    Amount: 50
+  Job:
+    Duration: 5
+    Output:
+      Resource: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
+      Amount: 10
   Prefab: {fileID: 8721775913174080617, guid: f5249057e57da9b4a89812bfb51b7cc8, type: 3}

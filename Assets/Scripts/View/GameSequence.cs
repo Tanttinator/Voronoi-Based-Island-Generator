@@ -25,18 +25,22 @@ public class PlaceBuildingSequence : GameSequence
     }
 }
 
-public class ChangeWoodCountSequence : GameSequence
+public class ChangeResourceAmountSequence : GameSequence
 {
-    int newCount;
+    ResourceStack[] newAmounts;
 
-    public ChangeWoodCountSequence(int newCount)
+    public ChangeResourceAmountSequence(ResourceStack[] newAmounts)
     {
-        this.newCount = newCount;
+        this.newAmounts = newAmounts;
     }
 
     public override IEnumerator Display(GameView view, GameConfig config)
     {
-        view.HUD.SetWoodCount(newCount);
+        foreach (ResourceStack stack in newAmounts)
+        {
+            if (stack.Resource == config.Wood)
+                view.HUD.SetWoodCount(stack.Amount);
+        }
         yield return null;
     }
 }

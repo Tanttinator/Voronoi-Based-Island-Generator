@@ -69,8 +69,8 @@ public class GameController
                 case BuildingPlacedEvent buildingPlaced:
                     sequenceQueue.Enqueue(new PlaceBuildingSequence(buildingPlaced.TileId));
                     break;
-                case WoodCountChangedEvent woodChanged:
-                    sequenceQueue.Enqueue(new ChangeWoodCountSequence(woodChanged.NewCount));
+                case ResourceAmountsChangedEvent resourcesChanged:
+                    sequenceQueue.Enqueue(new ChangeResourceAmountSequence(resourcesChanged.NewAmounts));
                     break;
             }
         }

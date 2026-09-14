@@ -17,12 +17,13 @@ public class GameSimulation
 
         foreach (BuildingState building in state.Buildings)
         {
+            Job job = config.Building.Job;
             building.AdvanceWorkProgress(dt);
-            if (building.WorkProgress >= config.Building.WorkDuration)
+            if (building.WorkProgress >= job.Duration)
             {
-                building.SetWorkProgress(building.WorkProgress - config.Building.WorkDuration);
-                state.ChangeWoodCount(config.WoodHarvestAmount);
-                events.Add(new WoodCountChangedEvent() { NewCount = state.WoodCount });
+                building.SetWorkProgress(building.WorkProgress - job.Duration);
+                state.AddResource(job.Output);
+                events.Add(new ResourceAmountsChangedEvent() { NewAmounts = new ResourceStack[] { new ResourceStack(job.Output.Resource, state.GetResource(job.Output.Resource)) } });
             }
         }
 

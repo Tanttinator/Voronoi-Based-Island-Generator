@@ -22,7 +22,7 @@ public class GameView
 
     public void Initialize(GameState state)
     {
-        HUD.SetWoodCount(state.WoodCount);
+        //HUD.SetWoodCount(state.GetResource());
         GenerateTerrain(state.Map);
     }
 

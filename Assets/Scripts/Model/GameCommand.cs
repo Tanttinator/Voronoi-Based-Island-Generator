@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class GameCommand
@@ -24,18 +25,18 @@ public class PlaceBuildingCommand : GameCommand
         if (tileId == -1) return new GameEvent[0];
 
         TileState tile = state.Map.Tiles[tileId];
-        int woodCost = config.Building.WoodCost;
+        ResourceStack[] cost = config.Building.Cost;
 
-        if (tile.IsWater || tile.IsForest || tile.HasBuilding || !state.HasWood(woodCost)) return new GameEvent[0];
+        if (tile.IsWater || tile.IsForest || tile.HasBuilding || !state.HasResources(cost)) return new GameEvent[0];
 
         tile.HasBuilding = true;
         state.AddBuilding();
-        state.ChangeWoodCount(-woodCost);
+        state.RemoveResources(cost);
 
         return new GameEvent[]
         {
             new BuildingPlacedEvent { TileId = tileId },
-            new WoodCountChangedEvent { NewCount = state.WoodCount }
+            new ResourceAmountsChangedEvent { NewAmounts = cost.Select(stack => stack.Resource).Select(resource => new ResourceStack(resource, state.GetResource(resource))).ToArray() }
         };
     }
 }
@@ -57,13 +58,14 @@ public class GatherWoodCommand : GameCommand
 
         if (!tile.IsForest) return new GameEvent[0];
 
-        state.ChangeWoodCount(config.WoodHarvestAmount);
+        ResourceStack harvestedWood = new ResourceStack(config.Wood, 10);
+        state.AddResource(harvestedWood);
 
         return new GameEvent[]
         {
-            new WoodCountChangedEvent
+            new ResourceAmountsChangedEvent
             {
-                NewCount = state.WoodCount
+                NewAmounts = new ResourceStack[] { new ResourceStack(config.Wood, state.GetResource(config.Wood)) }
             }
         };
     }

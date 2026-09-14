@@ -4,8 +4,8 @@ using UnityEngine;
 public class Building : ScriptableObject
 {
     [Header("Model")]
-    public int WoodCost;
-    public float WorkDuration;
+    public ResourceStack[] Cost;
+    public Job Job;
 
     [Header("View")]
     public GameObject Prefab;

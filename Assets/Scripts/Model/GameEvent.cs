@@ -10,7 +10,7 @@ public class BuildingPlacedEvent : GameEvent
     public int TileId;
 }
 
-public class WoodCountChangedEvent : GameEvent
+public class ResourceAmountsChangedEvent : GameEvent
 {
-    public int NewCount;
+    public ResourceStack[] NewAmounts;
 }
