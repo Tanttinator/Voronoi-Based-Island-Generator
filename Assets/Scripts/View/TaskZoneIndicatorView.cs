@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class TaskZoneIndicatorView
 {
+    GameObject instance;
     MeshRenderer icon;
     LineRenderer border;
 
     public TaskZoneIndicatorView(GameObject indicatorPrefab, Vector3 position, Vector3[] borderPoints, Texture2D iconTexture, Color color)
     {
-        GameObject instance = GameObject.Instantiate(indicatorPrefab, position, Quaternion.identity);
+        instance = GameObject.Instantiate(indicatorPrefab, position, Quaternion.identity);
         icon = instance.GetComponentInChildren<MeshRenderer>();
 
         border = instance.GetComponentInChildren<LineRenderer>();
@@ -20,5 +21,10 @@ public class TaskZoneIndicatorView
 
         Material borderMaterial = border.material;
         borderMaterial.color = color;
+    }
+
+    public void Destroy()
+    {
+        GameObject.Destroy(instance);
     }
 }

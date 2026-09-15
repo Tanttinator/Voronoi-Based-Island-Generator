@@ -20,3 +20,18 @@ public class GatheringZonePlacedEvent : GameEvent
 {
     public int TileId;
 }
+
+public class ForestClearedEvent : GameEvent
+{
+    public int TileId;
+}
+
+public class ClearingZonePlacedEvent : GameEvent
+{
+    public int TileId;
+}
+
+public class ClearingZoneRemovedEvent : GameEvent
+{
+    public int TileId;
+}

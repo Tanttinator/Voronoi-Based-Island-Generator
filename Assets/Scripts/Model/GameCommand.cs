@@ -64,3 +64,29 @@ public class PlaceGatheringZoneCommand : GameCommand
         };
     }
 }
+
+public class PlaceClearingZoneCommand : GameCommand
+{
+    int tileId;
+
+    public PlaceClearingZoneCommand(int tileId)
+    {
+        this.tileId = tileId;
+    }
+
+    public override GameEvent[] Execute(GameState state, GameConfig config)
+    {
+        if (tileId == -1) return new GameEvent[0];
+
+        TileState tile = state.Map.Tiles[tileId];
+
+        if (!tile.IsForest) return new GameEvent[0];
+
+        state.AddClearingZone(tileId);
+
+        return new GameEvent[]
+        {
+            new ClearingZonePlacedEvent { TileId = tileId }
+        };
+    }
+}

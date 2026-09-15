@@ -78,6 +78,15 @@ public class GameController
                 case GatheringZonePlacedEvent gatheringZonePlaced:
                     view.CreateTaskZoneIndicator(gatheringZonePlaced.TileId, config.GatheringIcon, config.GatheringColor);
                     break;
+                case ClearingZonePlacedEvent clearingZonePlaced:
+                    view.CreateTaskZoneIndicator(clearingZonePlaced.TileId, config.ClearingIcon, config.ClearingColor);
+                    break;
+                case ClearingZoneRemovedEvent clearingZoneRemoved:
+                    view.DestroyTaskZoneIndicator(clearingZoneRemoved.TileId);
+                    break;
+                case ForestClearedEvent forestCleared:
+                    view.Terrain.Tiles[forestCleared.TileId].DestroyFeature();
+                    break;
             }
         }
     }

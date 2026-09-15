@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using StudioIda.Math;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class GameView
 {
     public HUDView HUD { get; private set; }
     public Terrain Terrain { get; private set; }
+
+    Dictionary<int, TaskZoneIndicatorView> taskZoneIndicators = new Dictionary<int, TaskZoneIndicatorView>();
 
     GameObject treePrefab;
     GameObject taskZoneIndicatorPrefab;
@@ -42,11 +45,15 @@ public class GameView
             {
                 TileView tile = Terrain.Tiles[i];
 
+                GameObject forest = new GameObject("Forest");
+                forest.transform.SetParent(Terrain.transform);
+                tile.AddFeature(forest);
+
                 for (int j = 0; j < 20; j++)
                 {
                     Point position = tile.GetRandomPointOnTile();
 
-                    GameObject tree = GameObject.Instantiate(treePrefab, Terrain.transform);
+                    GameObject tree = GameObject.Instantiate(treePrefab, forest.transform);
                     tree.transform.position = new Vector3(position.x, 0, position.y);
                 }
             }
@@ -71,6 +78,14 @@ public class GameView
         Vector3[] border = tile.Shape.Corners.Select(p => new Vector3(p.x, 0.01f, p.y)).ToArray();
 
         TaskZoneIndicatorView view = new TaskZoneIndicatorView(taskZoneIndicatorPrefab, position, border, icon, color);
+        taskZoneIndicators[tileId] = view;
         return view;
+    }
+
+    public void DestroyTaskZoneIndicator(int tileId)
+    {
+        TaskZoneIndicatorView view = taskZoneIndicators[tileId];
+        view.Destroy();
+        taskZoneIndicators.Remove(tileId);
     }
 }

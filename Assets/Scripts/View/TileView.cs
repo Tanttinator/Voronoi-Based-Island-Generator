@@ -6,11 +6,19 @@ public class TileView
 {
     public Polygon Shape { get; private set; }
     public Triangle[] Triangulation { get; private set; }
+    public GameObject Feature { get; private set; }
 
     public TileView(Polygon shape)
     {
         Shape = shape;
         Triangulation = EarClipping.TriangulatePolygon(shape);
+    }
+
+    public void AddFeature(GameObject feature) => Feature = feature;
+    public void DestroyFeature()
+    {
+        GameObject.Destroy(Feature);
+        Feature = null;
     }
 
     public Point GetRandomPointOnTile()
