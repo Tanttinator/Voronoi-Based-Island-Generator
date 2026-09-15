@@ -1,3 +1,4 @@
+using System.Linq;
 using StudioIda.Math;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,6 +9,7 @@ public class GameView
     public Terrain Terrain { get; private set; }
 
     GameObject treePrefab;
+    GameObject taskZoneIndicatorPrefab;
 
     public GameView(GameViewResources resources, GameConfig config)
     {
@@ -21,6 +23,7 @@ public class GameView
         Terrain.HideTileOutline();
 
         treePrefab = resources.TreePrefab;
+        taskZoneIndicatorPrefab = resources.TaskZoneIndicator;
     }
 
     public void Initialize(GameState state)
@@ -59,5 +62,15 @@ public class GameView
         }
 
         return -1;
+    }
+
+    public TaskZoneIndicatorView CreateTaskZoneIndicator(int tileId, Texture2D icon, Color color)
+    {
+        TileView tile = Terrain.Tiles[tileId];
+        Vector3 position = new Vector3(tile.Shape.Center.x, 0f, tile.Shape.Center.y);
+        Vector3[] border = tile.Shape.Corners.Select(p => new Vector3(p.x, 0.01f, p.y)).ToArray();
+
+        TaskZoneIndicatorView view = new TaskZoneIndicatorView(taskZoneIndicatorPrefab, position, border, icon, color);
+        return view;
     }
 }

@@ -15,3 +15,8 @@ public class ResourceAmountsChangedEvent : GameEvent
 {
     public ResourceStack[] NewAmounts;
 }
+
+public class GatheringZonePlacedEvent : GameEvent
+{
+    public int TileId;
+}

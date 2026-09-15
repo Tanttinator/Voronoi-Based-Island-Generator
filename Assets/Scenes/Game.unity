@@ -310,6 +310,7 @@ MonoBehaviour:
     HUD: {fileID: 1769714148}
     Terrain: {fileID: 1164302794}
     TreePrefab: {fileID: 1624494266761835998, guid: 9462d979b259b27418abd0443de275b7, type: 3}
+    TaskZoneIndicator: {fileID: 5437567893759799284, guid: 31b13cdc76c0d9643ae67f4fccbbf07f, type: 3}
     ResourceCountTemplate: {fileID: 9197481963319205126, guid: 7ad5b669c39822e4098ae80df9bffc11, type: 3}
     ConstructionMenuItemTemplate: {fileID: 9197481963319205126, guid: c6e45914a4c97eb48b77386a562d8e99, type: 3}
 --- !u!1 &1154736639

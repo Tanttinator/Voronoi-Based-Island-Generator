@@ -56,6 +56,7 @@ public class GameController
         mode.State = model.State;
         mode.View = view;
         mode.Input = input;
+        mode.Config = config;
 
         currentInteractionMode?.End();
         currentInteractionMode = mode;
@@ -73,6 +74,9 @@ public class GameController
                     break;
                 case ResourceAmountsChangedEvent resourcesChanged:
                     sequenceQueue.Enqueue(new ChangeResourceAmountSequence(resourcesChanged.NewAmounts));
+                    break;
+                case GatheringZonePlacedEvent gatheringZonePlaced:
+                    view.CreateTaskZoneIndicator(gatheringZonePlaced.TileId, config.GatheringIcon, config.GatheringColor);
                     break;
             }
         }

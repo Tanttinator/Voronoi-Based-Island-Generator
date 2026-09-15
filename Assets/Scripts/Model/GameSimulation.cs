@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class GameSimulation
 {
@@ -22,11 +23,29 @@ public class GameSimulation
             if (building.WorkProgress >= job.Duration)
             {
                 building.SetWorkProgress(building.WorkProgress - job.Duration);
-                state.AddResource(job.Output);
-                events.Add(new ResourceAmountsChangedEvent() { NewAmounts = new ResourceStack[] { new ResourceStack(job.Output.Resource, state.GetResource(job.Output.Resource)) } });
+                GameEvent evt = AddResource(job.Output);
+                events.Add(evt);
+            }
+        }
+
+        foreach (GatheringZoneState gatheringZone in state.GatheringZones)
+        {
+            gatheringZone.AdvanceProgress(dt);
+            if (gatheringZone.Progress >= config.GatheringZoneDuration)
+            {
+                gatheringZone.SetProgress(gatheringZone.Progress - config.GatheringZoneDuration);
+                ResourceStack output = config.GatheringZoneOutput[Random.Range(0, config.GatheringZoneOutput.Length)];
+                GameEvent evt = AddResource(output);
+                events.Add(evt);
             }
         }
 
         return events.ToArray();
+    }
+
+    GameEvent AddResource(ResourceStack stack)
+    {
+        state.AddResource(stack);
+        return new ResourceAmountsChangedEvent() { NewAmounts = new ResourceStack[] { new ResourceStack(stack.Resource, state.GetResource(stack.Resource)) } };
     }
 }

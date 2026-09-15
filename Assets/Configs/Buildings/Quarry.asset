@@ -20,4 +20,4 @@ MonoBehaviour:
     Output:
       Resource: {fileID: 11400000, guid: bf0abb7573693b74b9d7fb573095869e, type: 2}
       Amount: 10
-  Prefab: {fileID: 8721775913174080617, guid: f5249057e57da9b4a89812bfb51b7cc8, type: 3}
+  Prefab: {fileID: 5430333432902031837, guid: 4dd0ff18d447b0a45b6e61540a4b92c8, type: 3}

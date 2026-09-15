@@ -43,11 +43,11 @@ public class PlaceBuildingCommand : GameCommand
     }
 }
 
-public class GatherWoodCommand : GameCommand
+public class PlaceGatheringZoneCommand : GameCommand
 {
     int tileId;
 
-    public GatherWoodCommand(int tileId)
+    public PlaceGatheringZoneCommand(int tileId)
     {
         this.tileId = tileId;
     }
@@ -56,19 +56,11 @@ public class GatherWoodCommand : GameCommand
     {
         if (tileId == -1) return new GameEvent[0];
 
-        TileState tile = state.Map.Tiles[tileId];
-
-        if (!tile.IsForest) return new GameEvent[0];
-
-        ResourceStack harvestedWood = new ResourceStack(config.Wood, 10);
-        state.AddResource(harvestedWood);
+        state.AddGatheringZone();
 
         return new GameEvent[]
         {
-            new ResourceAmountsChangedEvent
-            {
-                NewAmounts = new ResourceStack[] { new ResourceStack(config.Wood, state.GetResource(config.Wood)) }
-            }
+            new GatheringZonePlacedEvent { TileId = tileId }
         };
     }
 }

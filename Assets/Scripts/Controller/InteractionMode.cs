@@ -7,6 +7,7 @@ public abstract class InteractionMode
     public GameState State;
     public GameView View;
     public InputProvider Input;
+    public GameConfig Config;
 
     public virtual void Start()
     {
@@ -45,10 +46,10 @@ public class DefaultInteractionMode : InteractionMode
         {
             if (tileId == -1) return GameCommand.None;
 
+            return new PlaceGatheringZoneCommand(tileId);
+
             TileState tile = State.Map.Tiles[tileId];
-            if (tile.IsForest)
-                return new GatherWoodCommand(tileId);
-            else if (selectedBuilding != null)
+            if (selectedBuilding != null && !tile.IsForest && !tile.IsWater)
                 return new PlaceBuildingCommand(selectedBuilding, tileId);
         }
 
