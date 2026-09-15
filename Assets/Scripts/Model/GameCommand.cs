@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -6,9 +7,9 @@ public class GameCommand
 {
     public static readonly GameCommand None = new GameCommand();
 
-    public virtual GameEvent[] Execute(GameState state, GameConfig config)
+    public virtual IEnumerable<GameEvent> Execute(GameState state, GameConfig config)
     {
-        return new GameEvent[0];
+        yield break;
     }
 }
 
@@ -23,23 +24,20 @@ public class PlaceConstructionZoneCommand : GameCommand
         this.tileId = tileId;
     }
 
-    public override GameEvent[] Execute(GameState state, GameConfig config)
+    public override IEnumerable<GameEvent> Execute(GameState state, GameConfig config)
     {
-        if (tileId == -1) return new GameEvent[0];
+        if (tileId == -1) yield break;
         TileState tile = state.Map.Tiles[tileId];
-        if (tile.IsWater || tile.IsForest || tile.HasBuilding) return new GameEvent[0];
+        if (tile.IsWater || tile.IsForest || tile.HasBuilding) yield break;
 
         ResourceStack[] cost = building.Cost;
-        if (!state.HasResources(cost)) return new GameEvent[0];
+        if (!state.HasResources(cost)) yield break;
 
         state.AddConstructionZone(tileId, building);
-        state.RemoveResources(cost);
+        yield return new ConstructionZonePlacedEvent { TileId = tileId };
 
-        return new GameEvent[]
-        {
-            new ConstructionZonePlacedEvent { TileId = tileId },
-            new ResourceAmountsChangedEvent { NewAmounts = cost.Select(stack => stack.Resource).Select(resource => new ResourceStack(resource, state.GetResource(resource))).ToArray() }
-        };
+        state.RemoveResources(cost);
+        yield return new ResourceAmountsChangedEvent { NewAmounts = cost.Select(stack => stack.Resource).Select(resource => new ResourceStack(resource, state.GetResource(resource))).ToArray() };
     }
 }
 
@@ -52,16 +50,12 @@ public class PlaceGatheringZoneCommand : GameCommand
         this.tileId = tileId;
     }
 
-    public override GameEvent[] Execute(GameState state, GameConfig config)
+    public override IEnumerable<GameEvent> Execute(GameState state, GameConfig config)
     {
-        if (tileId == -1) return new GameEvent[0];
+        if (tileId == -1) yield break;
 
         state.AddGatheringZone();
-
-        return new GameEvent[]
-        {
-            new GatheringZonePlacedEvent { TileId = tileId }
-        };
+        yield return new GatheringZonePlacedEvent { TileId = tileId };
     }
 }
 
@@ -74,19 +68,15 @@ public class PlaceClearingZoneCommand : GameCommand
         this.tileId = tileId;
     }
 
-    public override GameEvent[] Execute(GameState state, GameConfig config)
+    public override IEnumerable<GameEvent> Execute(GameState state, GameConfig config)
     {
-        if (tileId == -1) return new GameEvent[0];
+        if (tileId == -1) yield break;
 
         TileState tile = state.Map.Tiles[tileId];
 
-        if (!tile.IsForest) return new GameEvent[0];
+        if (!tile.IsForest) yield break;
 
         state.AddClearingZone(tileId);
-
-        return new GameEvent[]
-        {
-            new ClearingZonePlacedEvent { TileId = tileId }
-        };
+        yield return new ClearingZonePlacedEvent { TileId = tileId };
     }
 }

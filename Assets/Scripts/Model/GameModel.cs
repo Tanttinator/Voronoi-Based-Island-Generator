@@ -1,3 +1,4 @@
+using System.Linq;
 using StudioIda.Math;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class GameModel
 
     public GameEvent[] ExecuteCommand(GameCommand command)
     {
-        return command.Execute(State, config);
+        return command.Execute(State, config).ToArray();
     }
 
     public GameEvent[] Simulate(float dt)
