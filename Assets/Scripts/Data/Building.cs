@@ -5,6 +5,7 @@ public class Building : ScriptableObject
 {
     [Header("Model")]
     public ResourceStack[] Cost;
+    public float ConstructionDuration;
     public Job Job;
 
     [Header("View")]

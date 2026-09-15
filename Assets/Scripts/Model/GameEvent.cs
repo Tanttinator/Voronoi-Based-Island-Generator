@@ -5,7 +5,7 @@ public abstract class GameEvent
 
 }
 
-public class BuildingPlacedEvent : GameEvent
+public class BuildingConstructedEvent : GameEvent
 {
     public Building Building;
     public int TileId;
@@ -32,6 +32,16 @@ public class ClearingZonePlacedEvent : GameEvent
 }
 
 public class ClearingZoneRemovedEvent : GameEvent
+{
+    public int TileId;
+}
+
+public class ConstructionZonePlacedEvent : GameEvent
+{
+    public int TileId;
+}
+
+public class ConstructionZoneRemovedEvent : GameEvent
 {
     public int TileId;
 }

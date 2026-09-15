@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
 public class GameSimulation
@@ -55,6 +56,20 @@ public class GameSimulation
 
                 GameEvent evt = AddResource(config.ClearingZoneOutput);
                 events.Add(evt);
+            }
+        }
+
+        foreach ((int tileId, ConstructionZoneState constructionZone) in state.ConstructionZones.ToArray())
+        {
+            constructionZone.AdvanceProgress(dt);
+            if (constructionZone.Progress >= constructionZone.Building.ConstructionDuration)
+            {
+                state.RemoveConstructionZone(tileId);
+                events.Add(new ConstructionZoneRemovedEvent { TileId = tileId });
+
+                state.AddBuilding(constructionZone.Building);
+                state.Map.Tiles[tileId].HasBuilding = true;
+                events.Add(new BuildingConstructedEvent { TileId = tileId, Building = constructionZone.Building });
             }
         }
 

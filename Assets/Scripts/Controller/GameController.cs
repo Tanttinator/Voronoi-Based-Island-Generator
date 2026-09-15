@@ -69,11 +69,14 @@ public class GameController
         {
             switch (evt)
             {
-                case BuildingPlacedEvent buildingPlaced:
+                case BuildingConstructedEvent buildingPlaced:
                     sequenceQueue.Enqueue(new PlaceBuildingSequence(buildingPlaced.Building, buildingPlaced.TileId));
                     break;
                 case ResourceAmountsChangedEvent resourcesChanged:
                     sequenceQueue.Enqueue(new ChangeResourceAmountSequence(resourcesChanged.NewAmounts));
+                    break;
+                case ForestClearedEvent forestCleared:
+                    view.Terrain.Tiles[forestCleared.TileId].DestroyFeature();
                     break;
                 case GatheringZonePlacedEvent gatheringZonePlaced:
                     view.CreateTaskZoneIndicator(gatheringZonePlaced.TileId, config.GatheringIcon, config.GatheringColor);
@@ -84,8 +87,11 @@ public class GameController
                 case ClearingZoneRemovedEvent clearingZoneRemoved:
                     view.DestroyTaskZoneIndicator(clearingZoneRemoved.TileId);
                     break;
-                case ForestClearedEvent forestCleared:
-                    view.Terrain.Tiles[forestCleared.TileId].DestroyFeature();
+                case ConstructionZonePlacedEvent constructionZonePlaced:
+                    view.CreateTaskZoneIndicator(constructionZonePlaced.TileId, config.ConstructionIcon, config.ConstructionColor);
+                    break;
+                case ConstructionZoneRemovedEvent constructionZoneRemoved:
+                    view.DestroyTaskZoneIndicator(constructionZoneRemoved.TileId);
                     break;
             }
         }

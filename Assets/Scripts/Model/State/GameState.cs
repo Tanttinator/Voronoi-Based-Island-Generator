@@ -9,11 +9,13 @@ public class GameState
     List<BuildingState> buildings = new List<BuildingState>();
     List<GatheringZoneState> gatheringZones = new List<GatheringZoneState>();
     Dictionary<int, ClearingZoneState> clearingZones = new Dictionary<int, ClearingZoneState>();
+    Dictionary<int, ConstructionZoneState> constructionZones = new Dictionary<int, ConstructionZoneState>();
     Dictionary<Resource, int> resources = new Dictionary<Resource, int>();
 
     public IEnumerable<BuildingState> Buildings => buildings;
     public IEnumerable<GatheringZoneState> GatheringZones => gatheringZones;
     public IEnumerable<(int tileId, ClearingZoneState clearingZone)> ClearingZones => clearingZones.Select(pair => (pair.Key, pair.Value));
+    public IEnumerable<(int tileId, ConstructionZoneState constructionZone)> ConstructionZones => constructionZones.Select(pair => (pair.Key, pair.Value));
 
     public GameState()
     {
@@ -21,9 +23,12 @@ public class GameState
     }
 
     public void AddBuilding(Building building) => buildings.Add(new BuildingState(building));
+
     public void AddGatheringZone() => gatheringZones.Add(new GatheringZoneState());
     public void AddClearingZone(int tileId) => clearingZones.Add(tileId, new ClearingZoneState());
     public void RemoveClearingZone(int tileId) => clearingZones.Remove(tileId);
+    public void AddConstructionZone(int tileId, Building building) => constructionZones.Add(tileId, new ConstructionZoneState(building));
+    public void RemoveConstructionZone(int tileId) => constructionZones.Remove(tileId);
 
     public int GetResource(Resource resource) => resources.GetValueOrDefault(resource);
     public void AddResource(ResourceStack stack) => resources[stack.Resource] = GetResource(stack.Resource) + stack.Amount;
