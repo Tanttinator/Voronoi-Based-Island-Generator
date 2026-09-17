@@ -49,12 +49,14 @@ public class GameView
                 forest.transform.SetParent(Terrain.transform);
                 tile.AddFeature(forest);
 
-                for (int j = 0; j < 20; j++)
+                for (int j = 0; j < 10; j++)
                 {
                     Point position = tile.GetRandomPointOnTile();
 
                     GameObject tree = GameObject.Instantiate(treePrefab, forest.transform);
                     tree.transform.position = new Vector3(position.x, 0, position.y);
+                    tree.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+                    tree.transform.localScale = Vector3.one * Random.Range(0.8f, 1.2f);
                 }
             }
         }

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingConfig
   Cost:
   - Resource: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
-    Amount: 50
+    Amount: 20
+  ConstructionDuration: 10
   Job:
     Duration: 5
     Output:

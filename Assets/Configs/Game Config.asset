@@ -12,13 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98fdf6b034ad804c898f0ce33ad0569, type: 3}
   m_Name: Game Config
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
-  Wood: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
   Buildings:
   - {fileID: 11400000, guid: 6b6a9e786f08e424889d254ccae222d3, type: 2}
   - {fileID: 11400000, guid: 39bcf34b791dfa145bf15ef2bd39ee41, type: 2}
+  GatheringZoneDuration: 3
+  GatheringZoneOutput:
+  - Resource: {fileID: 11400000, guid: f0f23939740adcc4e96e7674b9b41dd1, type: 2}
+    Amount: 2
+  - Resource: {fileID: 11400000, guid: bf0abb7573693b74b9d7fb573095869e, type: 2}
+    Amount: 2
+  - Resource: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
+    Amount: 2
+  ClearingZoneDuration: 10
+  ClearingZoneOutput:
+    Resource: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
+    Amount: 10
   DisplayResources:
   - {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
   - {fileID: 11400000, guid: bf0abb7573693b74b9d7fb573095869e, type: 2}
+  - {fileID: 11400000, guid: f0f23939740adcc4e96e7674b9b41dd1, type: 2}
   ConstructionIcon: {fileID: 2800000, guid: 5031d9c1c3ac2ec4d96a1783f469708e, type: 3}
   ConstructionColor: {r: 1, g: 1, b: 1, a: 1}
   ClearingIcon: {fileID: 2800000, guid: 715d202244329b942ae8e90ada04dfc8, type: 3}
