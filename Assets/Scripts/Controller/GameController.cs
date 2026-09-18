@@ -34,6 +34,9 @@ public class GameController
         TileState[] tiles = WorldGeneration.GenerateTiles(area);
         model.State.Map.SetTiles(tiles);
 
+        int[][] adjacencies = WorldGeneration.GenerateAdjacencies(tiles);
+        model.State.Map.SetAdjacencies(adjacencies);
+
         view.Initialize(model.State);
 
         SetInteractionMode(new DefaultInteractionMode());

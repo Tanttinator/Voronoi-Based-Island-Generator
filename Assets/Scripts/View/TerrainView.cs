@@ -18,7 +18,7 @@ public class TerrainView : MonoBehaviour
     public void GenerateTerrain(MapState map)
     {
         GenerateTiles(map.Tiles, map.Area);
-        GenerateTerrainMesh(map.Tiles);
+        GenerateTerrainMesh(map);
         GenerateTerrainFeatures(map.Tiles);
         GenerateTileColliders();
     }
@@ -26,7 +26,7 @@ public class TerrainView : MonoBehaviour
     void GenerateTiles(TileState[] tiles, Rectangle area)
     {
         DCEL dcel = Delaunay.Triangulate(tiles.Select(tile => tile.Position).ToArray());
-        Polygon[] cells = Voronoi.FromDelaunay(dcel, area);
+        Polygon[] cells = Voronoi.FromDelaunay(dcel, Rectangle.Expand(area, 1));
 
         Tiles = new TileView[tiles.Length];
         for (int i = 0; i < tiles.Length; i++)
@@ -35,23 +35,23 @@ public class TerrainView : MonoBehaviour
         }
     }
 
-    void GenerateTerrainMesh(TileState[] tiles)
+    void GenerateTerrainMesh(MapState map)
     {
-        for (int i = 0; i < tiles.Length; i++)
+        for (int i = 0; i < map.Tiles.Length; i++)
         {
-            TileState tile = tiles[i];
+            TileState tile = map.Tiles[i];
             TileView view = Tiles[i];
             if (tile.IsWater)
                 CreateWaterTile(view);
             else
-                CreateGroundTile(view);
+                CreateGroundTile(view, map.GetAdjacencies(i).Select(tileId => map.Tiles[tileId].IsWater).ToArray());
         }
 
         groundLayer.CreateMesh();
         waterLayer.CreateMesh();
     }
 
-    void CreateGroundTile(TileView tile)
+    void CreateGroundTile(TileView tile, bool[] waterNeighbors)
     {
         for (int j = 0; j < tile.Triangulation.Length; j++)
         {
@@ -63,6 +63,23 @@ public class TerrainView : MonoBehaviour
 
             groundLayer.AddTriangle(a, b, c, Color.green);
         }
+
+        for (int i = 0; i < waterNeighbors.Length; i++)
+        {
+            if (waterNeighbors[i]) CreateCoast(tile, i);
+        }
+    }
+
+    void CreateCoast(TileView tile, int edge)
+    {
+        (Point a, Point b) = tile.Shape.GetEdge(edge);
+
+        Vector3 va = new Vector3(b.x, -0.1f, b.y);
+        Vector3 vb = new Vector3(b.x, 0, b.y);
+        Vector3 vc = new Vector3(a.x, 0, a.y);
+        Vector3 vd = new Vector3(a.x, -0.1f, a.y);
+
+        groundLayer.AddQuad(va, vb, vc, vd, Color.beige);
     }
 
     void CreateWaterTile(TileView tile)
@@ -75,7 +92,7 @@ public class TerrainView : MonoBehaviour
             Vector3 b = new Vector3(triangle.b.x, -0.1f, triangle.b.y);
             Vector3 c = new Vector3(triangle.c.x, -0.1f, triangle.c.y);
 
-            groundLayer.AddTriangle(a, b, c, Color.blue);
+            waterLayer.AddTriangle(a, b, c, Color.blue);
         }
     }
 

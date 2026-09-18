@@ -20,6 +20,7 @@ public class TerrainLayerView : MonoBehaviour
         mesh.vertices = vertices.ToArray();
         mesh.triangles = indices.ToArray();
         mesh.colors = colors.ToArray();
+        mesh.RecalculateNormals();
         filter.sharedMesh = mesh;
     }
 
@@ -38,5 +39,11 @@ public class TerrainLayerView : MonoBehaviour
         colors.Add(color);
         colors.Add(color);
         colors.Add(color);
+    }
+
+    public void AddQuad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color color)
+    {
+        AddTriangle(a, b, c, color);
+        AddTriangle(a, c, d, color);
     }
 }
