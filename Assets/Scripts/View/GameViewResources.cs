@@ -7,10 +7,9 @@ public class GameViewResources
 {
     [Header("References")]
     public UIDocument HUD;
-    public Terrain Terrain;
+    public TerrainView Terrain;
 
     [Header("Prefabs")]
-    public GameObject TreePrefab;
     public GameObject TaskZoneIndicator;
 
     [Header("UI Templates")]

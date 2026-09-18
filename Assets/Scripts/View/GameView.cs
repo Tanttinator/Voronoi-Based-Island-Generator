@@ -7,11 +7,10 @@ using UnityEngine.InputSystem;
 public class GameView
 {
     public HUDView HUD { get; private set; }
-    public Terrain Terrain { get; private set; }
+    public TerrainView Terrain { get; private set; }
 
     Dictionary<int, TaskZoneIndicatorView> taskZoneIndicators = new Dictionary<int, TaskZoneIndicatorView>();
 
-    GameObject treePrefab;
     GameObject taskZoneIndicatorPrefab;
 
     public GameView(GameViewResources resources, GameConfig config)
@@ -25,7 +24,6 @@ public class GameView
         Terrain = resources.Terrain;
         Terrain.HideTileOutline();
 
-        treePrefab = resources.TreePrefab;
         taskZoneIndicatorPrefab = resources.TaskZoneIndicator;
     }
 
@@ -33,33 +31,7 @@ public class GameView
     {
         foreach (Resource resource in HUD.DisplayResources)
             HUD.UpdateResourceCounter(resource, state.GetResource(resource));
-        GenerateTerrain(state.Map);
-    }
-
-    void GenerateTerrain(MapState map)
-    {
-        Terrain.GenerateMesh(map.Tiles, map.Area);
-        for (int i = 0; i < map.Tiles.Length; i++)
-        {
-            if (map.Tiles[i].IsForest)
-            {
-                TileView tile = Terrain.Tiles[i];
-
-                GameObject forest = new GameObject("Forest");
-                forest.transform.SetParent(Terrain.transform);
-                tile.AddFeature(forest);
-
-                for (int j = 0; j < 10; j++)
-                {
-                    Point position = tile.GetRandomPointOnTile();
-
-                    GameObject tree = GameObject.Instantiate(treePrefab, forest.transform);
-                    tree.transform.position = new Vector3(position.x, 0, position.y);
-                    tree.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
-                    tree.transform.localScale = Vector3.one * Random.Range(0.8f, 1.2f);
-                }
-            }
-        }
+        Terrain.GenerateTerrain(state.Map);
     }
 
     public int GetHoveredTile()
