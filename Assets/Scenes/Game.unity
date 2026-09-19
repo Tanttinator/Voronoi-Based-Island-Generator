@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 758c10c2920145b40b1a9ee0350413b6, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -466,6 +466,9 @@ MonoBehaviour:
   waterLayer: {fileID: 734417303}
   tileOutline: {fileID: 127247945}
   treePrefab: {fileID: 8309413292703217114, guid: 9fa019bd1f213774f8f714a7c7a5347d, type: 3}
+  grassColor: {r: 0.6666667, g: 0.63529414, b: 0.25490198, a: 1}
+  sandColor: {r: 0.9764706, g: 0.8784314, b: 0.68235296, a: 1}
+  coastWidth: 0.1
 --- !u!1 &1297045143
 GameObject:
   m_ObjectHideFlags: 0

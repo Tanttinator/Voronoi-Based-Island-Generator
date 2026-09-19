@@ -10,6 +10,9 @@ public class TerrainView : MonoBehaviour
     [SerializeField] TerrainLayerView waterLayer;
     [SerializeField] LineRenderer tileOutline;
     [SerializeField] GameObject treePrefab;
+    [SerializeField] Color grassColor;
+    [SerializeField] Color sandColor;
+    [SerializeField] float coastWidth;
 
     public TileView[] Tiles { get; private set; }
 
@@ -42,16 +45,52 @@ public class TerrainView : MonoBehaviour
             TileState tile = map.Tiles[i];
             TileView view = Tiles[i];
             if (tile.IsWater)
-                CreateWaterTile(view);
+            {
+                //CreateWaterTile(view);
+
+                int[] adjacencies = map.GetAdjacencies(i);
+                for (int edgeId = 0; edgeId < adjacencies.Length; edgeId++)
+                {
+                    TileState neighbor = map.Tiles[adjacencies[edgeId]];
+                    if (!neighbor.IsWater)
+                    {
+                        int leftEdge = (edgeId - 1 + adjacencies.Length) % adjacencies.Length;
+                        float leftAngle = view.Shape.GetCornerAngle(leftEdge);
+                        int leftNeighbor = adjacencies[leftEdge];
+                        if (map.Tiles[leftNeighbor].IsWater)
+                        {
+                            TileView neighborView = Tiles[leftNeighbor];
+                            int edgeInNeighbor = map.GetEdgeToTile(leftNeighbor, i);
+                            int[] neighborAdjacencies = map.GetAdjacencies(leftNeighbor);
+                            int neighborLeftEdge = (edgeInNeighbor - 1 + neighborAdjacencies.Length) % neighborAdjacencies.Length;
+                            leftAngle += neighborView.Shape.GetCornerAngle(neighborLeftEdge);
+                        }
+
+                        int rightEdge = (edgeId + 1) % adjacencies.Length;
+                        float rightAngle = view.Shape.GetCornerAngle(edgeId);
+                        int rightNeighbor = adjacencies[rightEdge];
+                        if (map.Tiles[rightNeighbor].IsWater)
+                        {
+                            TileView neighborView = Tiles[rightNeighbor];
+                            int edgeInNeighbor = map.GetEdgeToTile(rightNeighbor, i);
+                            rightAngle += neighborView.Shape.GetCornerAngle(edgeInNeighbor);
+                        }
+
+                        CreateCoast(view, edgeId, leftAngle, rightAngle);
+                    }
+                }
+            }
             else
-                CreateGroundTile(view, map.GetAdjacencies(i).Select(tileId => map.Tiles[tileId].IsWater).ToArray());
+            {
+                CreateGroundTile(view);
+            }
         }
 
         groundLayer.CreateMesh();
         waterLayer.CreateMesh();
     }
 
-    void CreateGroundTile(TileView tile, bool[] waterNeighbors)
+    void CreateGroundTile(TileView tile)
     {
         for (int j = 0; j < tile.Triangulation.Length; j++)
         {
@@ -61,25 +100,8 @@ public class TerrainView : MonoBehaviour
             Vector3 b = new Vector3(triangle.b.x, 0, triangle.b.y);
             Vector3 c = new Vector3(triangle.c.x, 0, triangle.c.y);
 
-            groundLayer.AddTriangle(a, b, c, Color.green);
+            groundLayer.AddTriangle(a, b, c, grassColor);
         }
-
-        for (int i = 0; i < waterNeighbors.Length; i++)
-        {
-            if (waterNeighbors[i]) CreateCoast(tile, i);
-        }
-    }
-
-    void CreateCoast(TileView tile, int edge)
-    {
-        (Point a, Point b) = tile.Shape.GetEdge(edge);
-
-        Vector3 va = new Vector3(b.x, -0.1f, b.y);
-        Vector3 vb = new Vector3(b.x, 0, b.y);
-        Vector3 vc = new Vector3(a.x, 0, a.y);
-        Vector3 vd = new Vector3(a.x, -0.1f, a.y);
-
-        groundLayer.AddQuad(va, vb, vc, vd, Color.beige);
     }
 
     void CreateWaterTile(TileView tile)
@@ -94,6 +116,26 @@ public class TerrainView : MonoBehaviour
 
             waterLayer.AddTriangle(a, b, c, Color.blue);
         }
+    }
+
+    void CreateCoast(TileView tile, int edge, float leftCornerAngle, float rightCornerAngle)
+    {
+        (Point a, Point b) = tile.Shape.GetEdge(edge);
+
+        Vector3 topLeft = new Vector3(a.x, 0, a.y);
+        Vector3 topRight = new Vector3(b.x, 0, b.y);
+
+        Vector3 tangent = (topRight - topLeft).normalized;
+
+        float leftWidth = Mathf.Abs(coastWidth / Mathf.Sin(leftCornerAngle / 2));
+        Vector3 leftOffset = Quaternion.Euler(0f, leftCornerAngle / 2 * Mathf.Rad2Deg, 0f) * tangent * leftWidth;
+        Vector3 bottomLeft = topLeft + Vector3.down * 0.1f + leftOffset;
+
+        float rightWidth = Mathf.Abs(coastWidth / Mathf.Sin(rightCornerAngle / 2));
+        Vector3 rightOffset = Quaternion.Euler(0f, -rightCornerAngle / 2 * Mathf.Rad2Deg, 0f) * -tangent * rightWidth;
+        Vector3 bottomRight = topRight + Vector3.down * 0.1f + rightOffset;
+
+        groundLayer.AddQuad(bottomLeft, topLeft, topRight, bottomRight, sandColor);
     }
 
     void GenerateTerrainFeatures(TileState[] tiles)
