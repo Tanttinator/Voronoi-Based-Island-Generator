@@ -468,6 +468,8 @@ MonoBehaviour:
   treePrefab: {fileID: 8309413292703217114, guid: 9fa019bd1f213774f8f714a7c7a5347d, type: 3}
   grassColor: {r: 0.6666667, g: 0.63529414, b: 0.25490198, a: 1}
   sandColor: {r: 0.9764706, g: 0.8784314, b: 0.68235296, a: 1}
+  coastColor: {r: 0.51400006, g: 0.8473718, b: 1, a: 1}
+  waterColor: {r: 0.09019608, g: 0.41568628, b: 0.5647059, a: 1}
   coastWidth: 0.1
 --- !u!1 &1297045143
 GameObject:
