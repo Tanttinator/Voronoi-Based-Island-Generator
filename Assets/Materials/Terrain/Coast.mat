@@ -38,8 +38,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _FadeDistance: 5
+    - _FadeFalloff: 0.5
+    - _FadeStart: 4
+    - _FoamScale: 20
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _WindAngle: 0
     m_Colors:
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _WaterColor: {r: 0.09019608, g: 0.41568628, b: 0.5647059, a: 1}
