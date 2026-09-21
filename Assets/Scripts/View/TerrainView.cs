@@ -192,14 +192,18 @@ public class TerrainView : MonoBehaviour
         coastLayer.AddQuad(a, b, c, d, Color.white);
     }
 
-    void CreateCoastLand(Edge top, Edge bottom)
+    void CreateCoastLand(Edge bottom, Edge top)
     {
-        Vector3 a = new Vector3(bottom.B.x, -0.1f, bottom.B.y);
-        Vector3 b = new Vector3(top.B.x, 0f, top.B.y);
-        Vector3 c = new Vector3(top.A.x, 0f, top.A.y);
-        Vector3 d = new Vector3(bottom.A.x, -0.1f, bottom.A.y);
+        Vector3 a = new Vector3(bottom.A.x, 0f, bottom.A.y);
+        Vector3 b = new Vector3(top.A.x, -0.1f, top.A.y);
+        Vector3 c = new Vector3(top.B.x, -0.1f, top.B.y);
+        Vector3 d = new Vector3(bottom.B.x, 0f, bottom.B.y);
 
-        groundLayer.AddQuad(a, b, c, d, sandColor);
+        Vector3 midA = Vector3.Lerp(a, b, 0.4f);
+        Vector3 midB = Vector3.Lerp(d, c, 0.4f);
+
+        groundLayer.AddQuad(a, midA, midB, d, grassColor);
+        groundLayer.AddQuad(midA, b, c, midB, sandColor);
     }
 
     void GenerateTerrainFeatures(TileState[] tiles)
