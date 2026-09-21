@@ -8,6 +8,7 @@ public class TerrainView : MonoBehaviour
 {
     [SerializeField] TerrainLayerView groundLayer;
     [SerializeField] TerrainLayerView waterLayer;
+    [SerializeField] TerrainLayerView coastLayer;
     [SerializeField] LineRenderer tileOutline;
     [SerializeField] GameObject treePrefab;
     [SerializeField] Color grassColor;
@@ -94,7 +95,7 @@ public class TerrainView : MonoBehaviour
                         int rightNeighborId = adjacencies[rightEdgeId];
                         bool extendRight = !map.Tiles[rightNeighborId].IsWater;
 
-                        Edge insetEdge = GetInsetEdge(i, edgeId, coastWidth, extendLeft, extendRight, map);
+                        Edge insetEdge = GetInsetEdge(i, edgeId, 0.1f, extendLeft, extendRight, map);
                         CreateCoastLand(insetEdge, edge);
 
                         centerPoints[leftEdgeId] = insetEdge.A;
@@ -108,6 +109,7 @@ public class TerrainView : MonoBehaviour
 
         groundLayer.CreateMesh();
         waterLayer.CreateMesh();
+        coastLayer.CreateMesh();
     }
 
     Point GetCornerInset(Edge a, Edge b, float amount)
@@ -176,7 +178,7 @@ public class TerrainView : MonoBehaviour
             Vector3 b = new Vector3(triangle.b.x, -0.1f, triangle.b.y);
             Vector3 c = new Vector3(triangle.c.x, -0.1f, triangle.c.y);
 
-            waterLayer.AddTriangle(a, b, c, waterColor);
+            waterLayer.AddTriangle(a, b, c, Color.white);
         }
     }
 
@@ -187,7 +189,7 @@ public class TerrainView : MonoBehaviour
         Vector3 c = new Vector3(top.B.x, -0.1f, top.B.y);
         Vector3 d = new Vector3(bottom.B.x, -0.1f, bottom.B.y);
 
-        waterLayer.AddQuad(a, b, c, d, coastColor);
+        coastLayer.AddQuad(a, b, c, d, Color.white);
     }
 
     void CreateCoastLand(Edge top, Edge bottom)
