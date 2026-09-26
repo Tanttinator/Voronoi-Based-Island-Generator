@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ce662d7d9822943a09a4b161f46cf0, type: 3}
   m_Name: Forest
   m_EditorClassIdentifier: Assembly-CSharp::Feature
-  GatheringOutput: []
+  GatheringOutput:
+  - Resource: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
+    Amount: 2
   ClearingOutput:
-    Resource: {fileID: 0}
-    Amount: 0
-  Prefab: {fileID: 0}
+    Resource: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
+    Amount: 10
+  Prefab: {fileID: 8309413292703217114, guid: 9fa019bd1f213774f8f714a7c7a5347d, type: 3}

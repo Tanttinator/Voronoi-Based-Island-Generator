@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public static class WorldGeneration
 {
-    public static TileState[] GenerateTiles(Rectangle area, Feature forest, Feature boulders)
+    public static TileState[] GenerateTiles(Rectangle area, Feature forest, Feature boulders, Feature berries)
     {
         Point[] points = PoissonDisc.SamplePoints(area, 0.5f);
 
@@ -17,12 +17,13 @@ public static class WorldGeneration
             bool isWater = Point.DistanceSqr(area.Center, position) > 16;
 
             bool isForest = !isWater && Random.value < 0.5f;
-            bool isBoulders = !isWater && !isForest && Random.value < 0.25f;
+            bool isBoulders = !isWater && Random.value < 0.25f;
+            bool isBerries = !isWater && Random.value < 0.25f;
 
             tiles[i] = new TileState(position)
             {
                 IsWater = isWater,
-                Feature = isForest ? forest : isBoulders ? boulders : null
+                Feature = isForest ? forest : isBoulders ? boulders : isBerries ? berries : null
             };
         }
 

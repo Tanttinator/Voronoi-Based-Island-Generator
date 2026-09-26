@@ -15,18 +15,11 @@ MonoBehaviour:
   Buildings:
   - {fileID: 11400000, guid: 6b6a9e786f08e424889d254ccae222d3, type: 2}
   - {fileID: 11400000, guid: 39bcf34b791dfa145bf15ef2bd39ee41, type: 2}
+  Forest: {fileID: 11400000, guid: 6dfcdf7cbda916143903bb674ae0cd70, type: 2}
+  Boulders: {fileID: 11400000, guid: dbdc88ba6fa181942a882d5063b25ed0, type: 2}
+  Berries: {fileID: 11400000, guid: e14ff92698692154b8e7ea5d0e40950b, type: 2}
   GatheringZoneDuration: 3
-  GatheringZoneOutput:
-  - Resource: {fileID: 11400000, guid: f0f23939740adcc4e96e7674b9b41dd1, type: 2}
-    Amount: 2
-  - Resource: {fileID: 11400000, guid: bf0abb7573693b74b9d7fb573095869e, type: 2}
-    Amount: 2
-  - Resource: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
-    Amount: 2
   ClearingZoneDuration: 10
-  ClearingZoneOutput:
-    Resource: {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
-    Amount: 10
   DisplayResources:
   - {fileID: 11400000, guid: 833741d82fd4c1b40b7e6f92591f6c3b, type: 2}
   - {fileID: 11400000, guid: bf0abb7573693b74b9d7fb573095869e, type: 2}

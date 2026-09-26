@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ce662d7d9822943a09a4b161f46cf0, type: 3}
   m_Name: Boulders
   m_EditorClassIdentifier: Assembly-CSharp::Feature
-  GatheringOutput: []
+  GatheringOutput:
+  - Resource: {fileID: 11400000, guid: bf0abb7573693b74b9d7fb573095869e, type: 2}
+    Amount: 2
   ClearingOutput:
-    Resource: {fileID: 0}
-    Amount: 0
-  Prefab: {fileID: 0}
+    Resource: {fileID: 11400000, guid: bf0abb7573693b74b9d7fb573095869e, type: 2}
+    Amount: 10
+  Prefab: {fileID: 6173669432117341706, guid: 2ca4903e48f190349b6c87d247de1250, type: 3}

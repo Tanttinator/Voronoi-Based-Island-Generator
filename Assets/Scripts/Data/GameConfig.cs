@@ -8,6 +8,7 @@ public class GameConfig : ScriptableObject
 
     public Feature Forest;
     public Feature Boulders;
+    public Feature Berries;
 
     public float GatheringZoneDuration;
     public float ClearingZoneDuration;
