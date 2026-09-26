@@ -50,7 +50,7 @@ public class TerrainView : MonoBehaviour
             TileView view = Tiles[i];
             if (tile.IsWater)
             {
-                Point[] centerPoints = view.Shape.Corners.ToArray();
+                Point[] surfacePoints = view.Shape.Corners.ToArray();
 
                 int[] adjacencies = map.GetAdjacencies(i);
                 for (int edgeId = 0; edgeId < adjacencies.Length; edgeId++)
@@ -70,16 +70,18 @@ public class TerrainView : MonoBehaviour
                         Edge insetEdge = GetInsetEdge(i, edgeId, coastWidth, extendLeft, extendRight, map);
                         CreateCoastWater(edge, insetEdge);
 
-                        centerPoints[leftEdgeId] = insetEdge.A;
-                        centerPoints[edgeId] = insetEdge.B;
+                        surfacePoints[leftEdgeId] = insetEdge.A;
+                        surfacePoints[edgeId] = insetEdge.B;
                     }
                 }
 
-                CreateWaterTile(new Polygon(centerPoints));
+                Polygon surface = new Polygon(surfacePoints);
+                view.SetSurface(surface);
+                CreateWaterTile(surface);
             }
             else
             {
-                Point[] centerPoints = view.Shape.Corners.ToArray();
+                Point[] surfacePoints = view.Shape.Corners.ToArray();
 
                 int[] adjacencies = map.GetAdjacencies(i);
                 for (int edgeId = 0; edgeId < adjacencies.Length; edgeId++)
@@ -99,12 +101,14 @@ public class TerrainView : MonoBehaviour
                         Edge insetEdge = GetInsetEdge(i, edgeId, 0.1f, extendLeft, extendRight, map);
                         CreateCoastLand(insetEdge, edge);
 
-                        centerPoints[leftEdgeId] = insetEdge.A;
-                        centerPoints[edgeId] = insetEdge.B;
+                        surfacePoints[leftEdgeId] = insetEdge.A;
+                        surfacePoints[edgeId] = insetEdge.B;
                     }
                 }
 
-                CreateGroundTile(new Polygon(centerPoints));
+                Polygon surface = new Polygon(surfacePoints);
+                view.SetSurface(surface);
+                CreateGroundTile(surface);
             }
         }
 
@@ -244,9 +248,9 @@ public class TerrainView : MonoBehaviour
             List<Vector3> colliderVertices = new List<Vector3>();
             List<int> colliderIndices = new List<int>();
 
-            for (int j = 0; j < view.Triangulation.Length; j++)
+            for (int j = 0; j < view.Shape.Triangulation.Length; j++)
             {
-                Triangle triangle = view.Triangulation[j];
+                Triangle triangle = view.Shape.Triangulation[j];
 
                 Vector3 a = CellToWorldPoint(triangle.a);
                 Vector3 b = CellToWorldPoint(triangle.b);

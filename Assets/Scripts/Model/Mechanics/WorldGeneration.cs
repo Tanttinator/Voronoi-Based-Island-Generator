@@ -14,7 +14,7 @@ public static class WorldGeneration
         for (int i = 0; i < points.Length; i++)
         {
             Point position = points[i];
-            bool isWater = Point.DistanceSqr(area.Center, position) > 16;
+            bool isWater = Point.DistanceSqr(area.Center, position) > 16 || Random.value < 0.1f;
 
             bool isForest = !isWater && Random.value < 0.5f;
             bool isBoulders = !isWater && Random.value < 0.25f;
