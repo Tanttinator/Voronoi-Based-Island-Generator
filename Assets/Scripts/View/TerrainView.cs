@@ -11,6 +11,7 @@ public class TerrainView : MonoBehaviour
     [SerializeField] TerrainLayerView coastLayer;
     [SerializeField] LineRenderer tileOutline;
     [SerializeField] GameObject treePrefab;
+    [SerializeField] GameObject boulderPrefab;
     [SerializeField] Color grassColor;
     [SerializeField] Color sandColor;
     [SerializeField] Color coastColor;
@@ -210,22 +211,24 @@ public class TerrainView : MonoBehaviour
     {
         for (int i = 0; i < tiles.Length; i++)
         {
-            if (tiles[i].IsForest)
+            if (tiles[i].HasFeature)
             {
+                Feature feature = tiles[i].Feature;
+
                 TileView tile = Tiles[i];
 
-                GameObject forest = new GameObject("Forest");
-                forest.transform.SetParent(transform);
-                tile.AddFeature(forest);
+                GameObject featureGO = new GameObject(feature.name);
+                featureGO.transform.SetParent(transform);
+                tile.AddFeature(featureGO);
 
                 for (int j = 0; j < 10; j++)
                 {
                     Point position = tile.GetRandomPointOnTile();
 
-                    GameObject tree = Instantiate(treePrefab, forest.transform);
-                    tree.transform.position = new Vector3(position.x, 0, position.y);
-                    tree.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
-                    tree.transform.localScale = Vector3.one * Random.Range(0.8f, 1.2f);
+                    GameObject obj = Instantiate(feature.Prefab, featureGO.transform);
+                    obj.transform.position = new Vector3(position.x, 0, position.y);
+                    obj.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+                    obj.transform.localScale = Vector3.one * Random.Range(0.8f, 1.2f);
                 }
             }
         }

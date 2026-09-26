@@ -28,7 +28,7 @@ public class PlaceConstructionZoneCommand : GameCommand
     {
         if (tileId == -1) yield break;
         TileState tile = state.Map.Tiles[tileId];
-        if (tile.IsWater || tile.IsForest || tile.HasBuilding) yield break;
+        if (tile.IsWater || tile.HasFeature || tile.HasBuilding) yield break;
 
         ResourceStack[] cost = building.Cost;
         if (!state.HasResources(cost)) yield break;
@@ -54,7 +54,7 @@ public class PlaceGatheringZoneCommand : GameCommand
     {
         if (tileId == -1) yield break;
 
-        state.AddGatheringZone();
+        state.AddGatheringZone(tileId);
         yield return new GatheringZonePlacedEvent { TileId = tileId };
     }
 }
@@ -74,7 +74,7 @@ public class PlaceClearingZoneCommand : GameCommand
 
         TileState tile = state.Map.Tiles[tileId];
 
-        if (!tile.IsForest) yield break;
+        if (!tile.HasFeature) yield break;
 
         state.AddClearingZone(tileId);
         yield return new ClearingZonePlacedEvent { TileId = tileId };

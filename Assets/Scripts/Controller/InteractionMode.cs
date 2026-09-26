@@ -47,7 +47,7 @@ public class DefaultInteractionMode : InteractionMode
             if (tileId == -1) return GameCommand.None;
 
             TileState tile = State.Map.Tiles[tileId];
-            if (tile.IsForest)
+            if (tile.HasFeature)
                 return new PlaceGatheringZoneCommand(tileId);
             else if (selectedBuilding != null && !tile.IsWater)
                 return new PlaceConstructionZoneCommand(selectedBuilding, tileId);

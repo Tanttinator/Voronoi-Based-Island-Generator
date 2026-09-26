@@ -3,13 +3,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Game Config", menuName = "Configs/Game Config")]
 public class GameConfig : ScriptableObject
 {
+    [Header("Model")]
     public Building[] Buildings;
 
-    public float GatheringZoneDuration;
-    public ResourceStack[] GatheringZoneOutput;
+    public Feature Forest;
+    public Feature Boulders;
 
+    public float GatheringZoneDuration;
     public float ClearingZoneDuration;
-    public ResourceStack ClearingZoneOutput;
 
     [Header("View")]
     public Resource[] DisplayResources;

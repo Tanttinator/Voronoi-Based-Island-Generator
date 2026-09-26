@@ -31,13 +31,16 @@ public class GameSimulation
             }
         }
 
-        foreach (GatheringZoneState gatheringZone in state.GatheringZones)
+        foreach ((int tileId, GatheringZoneState gatheringZone) in state.GatheringZones)
         {
             gatheringZone.AdvanceProgress(dt);
             if (gatheringZone.Progress >= config.GatheringZoneDuration)
             {
+                TileState tile = state.Map.Tiles[tileId];
+                Feature feature = tile.Feature;
+
                 gatheringZone.SetProgress(gatheringZone.Progress - config.GatheringZoneDuration);
-                ResourceStack output = config.GatheringZoneOutput[Random.Range(0, config.GatheringZoneOutput.Length)];
+                ResourceStack output = feature.GatheringOutput[Random.Range(0, feature.GatheringOutput.Length)];
                 GameEvent evt = AddResource(output);
                 events.Add(evt);
             }
@@ -48,14 +51,14 @@ public class GameSimulation
             clearingZone.AdvanceProgress(dt);
             if (clearingZone.Progress >= config.ClearingZoneDuration)
             {
+                GameEvent evt = AddResource(state.Map.Tiles[tileId].Feature.ClearingOutput);
+                events.Add(evt);
+
                 state.RemoveClearingZone(tileId);
                 events.Add(new ClearingZoneRemovedEvent { TileId = tileId });
 
-                state.Map.Tiles[tileId].IsForest = false;
-                events.Add(new ForestClearedEvent { TileId = tileId });
-
-                GameEvent evt = AddResource(config.ClearingZoneOutput);
-                events.Add(evt);
+                state.Map.Tiles[tileId].Feature = null;
+                events.Add(new FeatureClearedEvent { TileId = tileId });
             }
         }
 

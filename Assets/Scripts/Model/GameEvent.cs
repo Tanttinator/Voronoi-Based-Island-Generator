@@ -21,7 +21,7 @@ public class GatheringZonePlacedEvent : GameEvent
     public int TileId;
 }
 
-public class ForestClearedEvent : GameEvent
+public class FeatureClearedEvent : GameEvent
 {
     public int TileId;
 }

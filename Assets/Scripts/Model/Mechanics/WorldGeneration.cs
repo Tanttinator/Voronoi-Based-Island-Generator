@@ -2,10 +2,11 @@ using System.Linq;
 using StudioIda.Graphs;
 using StudioIda.Math;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public static class WorldGeneration
 {
-    public static TileState[] GenerateTiles(Rectangle area)
+    public static TileState[] GenerateTiles(Rectangle area, Feature forest, Feature boulders)
     {
         Point[] points = PoissonDisc.SamplePoints(area, 0.5f);
 
@@ -14,12 +15,14 @@ public static class WorldGeneration
         {
             Point position = points[i];
             bool isWater = Point.DistanceSqr(area.Center, position) > 16;
+
             bool isForest = !isWater && Random.value < 0.5f;
-            tiles[i] = new TileState
+            bool isBoulders = !isWater && !isForest && Random.value < 0.25f;
+
+            tiles[i] = new TileState(position)
             {
-                Position = position,
                 IsWater = isWater,
-                IsForest = isForest
+                Feature = isForest ? forest : isBoulders ? boulders : null
             };
         }
 

@@ -31,7 +31,7 @@ public class GameController
         Rectangle area = new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
         model.State.Map.SetArea(area);
 
-        TileState[] tiles = WorldGeneration.GenerateTiles(area);
+        TileState[] tiles = WorldGeneration.GenerateTiles(area, config.Forest, config.Boulders);
         model.State.Map.SetTiles(tiles);
 
         int[][] adjacencies = WorldGeneration.GenerateAdjacencies(tiles);
@@ -78,8 +78,8 @@ public class GameController
                 case ResourceAmountsChangedEvent resourcesChanged:
                     sequenceQueue.Enqueue(new ChangeResourceAmountSequence(resourcesChanged.NewAmounts));
                     break;
-                case ForestClearedEvent forestCleared:
-                    view.Terrain.Tiles[forestCleared.TileId].DestroyFeature();
+                case FeatureClearedEvent featureCleared:
+                    view.Terrain.Tiles[featureCleared.TileId].DestroyFeature();
                     break;
                 case GatheringZonePlacedEvent gatheringZonePlaced:
                     view.CreateTaskZoneIndicator(gatheringZonePlaced.TileId, config.GatheringIcon, config.GatheringColor);

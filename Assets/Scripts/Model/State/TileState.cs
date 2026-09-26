@@ -3,8 +3,15 @@ using UnityEngine;
 
 public class TileState
 {
-    public Point Position;
+    public Point Position { get; private set; }
     public bool IsWater;
-    public bool IsForest;
+    public Feature Feature;
     public bool HasBuilding;
+
+    public bool HasFeature => Feature != null;
+
+    public TileState(Point position)
+    {
+        Position = position;
+    }
 }
