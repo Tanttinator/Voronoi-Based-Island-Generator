@@ -20,6 +20,8 @@ public class GameView
             HUD.CreateResourceCounter(resource);
         foreach (Building building in config.Buildings)
             HUD.ConstructionMenu.AddBuilding(building);
+        HUD.TaskMenu.AddTask(TaskType.GATHER);
+        HUD.TaskMenu.AddTask(TaskType.CLEAR);
 
         Terrain = resources.Terrain;
         Terrain.HideTileOutline();

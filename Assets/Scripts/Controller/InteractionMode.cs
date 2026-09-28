@@ -8,6 +8,7 @@ public abstract class InteractionMode
     public GameView View;
     public InputProvider Input;
     public GameConfig Config;
+    public Action<InteractionMode> ChangeMode;
 
     public virtual void Start()
     {
@@ -27,11 +28,42 @@ public abstract class InteractionMode
 
 public class DefaultInteractionMode : InteractionMode
 {
-    Building selectedBuilding = null;
+    public override void Start()
+    {
+        View.HUD.ConstructionMenu.OnBuildingSelected += OnBuildingSelected;
+        View.HUD.TaskMenu.OnTaskSelected += OnTaskSelected;
+    }
+
+    public override void End()
+    {
+        View.HUD.ConstructionMenu.OnBuildingSelected -= OnBuildingSelected;
+        View.HUD.TaskMenu.OnTaskSelected -= OnTaskSelected;
+    }
+
+    void OnBuildingSelected(Building building)
+    {
+        ChangeMode(new BuildingPlacementMode(building));
+    }
+
+    void OnTaskSelected(TaskType task)
+    {
+        ChangeMode(new TaskCreationMode(task));
+    }
+}
+
+public class BuildingPlacementMode : InteractionMode
+{
+    Building selectedBuilding;
+
+    public BuildingPlacementMode(Building building)
+    {
+        selectedBuilding = building;
+    }
 
     public override void Start()
     {
         View.HUD.ConstructionMenu.OnBuildingSelected += OnBuildingSelected;
+        View.HUD.TaskMenu.OnTaskSelected += OnTaskSelected;
     }
 
     public override GameCommand Update()
@@ -44,13 +76,7 @@ public class DefaultInteractionMode : InteractionMode
 
         if (Input.Clicked)
         {
-            if (tileId == -1) return GameCommand.None;
-
-            TileState tile = State.Map.Tiles[tileId];
-            if (tile.HasFeature)
-                return new PlaceGatheringZoneCommand(tileId);
-            else if (selectedBuilding != null && !tile.IsWater)
-                return new PlaceConstructionZoneCommand(selectedBuilding, tileId);
+            return new PlaceConstructionZoneCommand(selectedBuilding, tileId);
         }
 
         return GameCommand.None;
@@ -59,10 +85,69 @@ public class DefaultInteractionMode : InteractionMode
     public override void End()
     {
         View.HUD.ConstructionMenu.OnBuildingSelected -= OnBuildingSelected;
+        View.HUD.TaskMenu.OnTaskSelected -= OnTaskSelected;
     }
 
     void OnBuildingSelected(Building building)
     {
-        selectedBuilding = building;
+        ChangeMode(new BuildingPlacementMode(building));
+    }
+
+    void OnTaskSelected(TaskType task)
+    {
+        ChangeMode(new TaskCreationMode(task));
+    }
+}
+
+public class TaskCreationMode : InteractionMode
+{
+    TaskType task;
+
+    public TaskCreationMode(TaskType task)
+    {
+        this.task = task;
+    }
+
+    public override void Start()
+    {
+        View.HUD.ConstructionMenu.OnBuildingSelected += OnBuildingSelected;
+        View.HUD.TaskMenu.OnTaskSelected += OnTaskSelected;
+    }
+
+    public override GameCommand Update()
+    {
+        int tileId = View.GetHoveredTile();
+        if (tileId != -1)
+            View.Terrain.ShowTileOutline(tileId);
+        else
+            View.Terrain.HideTileOutline();
+
+        if (Input.Clicked)
+        {
+            if (task == TaskType.GATHER)
+                return new PlaceGatheringZoneCommand(tileId);
+            else if (task == TaskType.CLEAR)
+                return new PlaceClearingZoneCommand(tileId);
+
+            return GameCommand.None;
+        }
+
+        return GameCommand.None;
+    }
+
+    public override void End()
+    {
+        View.HUD.ConstructionMenu.OnBuildingSelected -= OnBuildingSelected;
+        View.HUD.TaskMenu.OnTaskSelected -= OnTaskSelected;
+    }
+
+    void OnBuildingSelected(Building building)
+    {
+        ChangeMode(new BuildingPlacementMode(building));
+    }
+
+    void OnTaskSelected(TaskType task)
+    {
+        ChangeMode(new TaskCreationMode(task));
     }
 }

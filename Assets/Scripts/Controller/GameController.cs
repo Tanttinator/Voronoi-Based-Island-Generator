@@ -60,6 +60,7 @@ public class GameController
         mode.View = view;
         mode.Input = input;
         mode.Config = config;
+        mode.ChangeMode = SetInteractionMode;
 
         currentInteractionMode?.End();
         currentInteractionMode = mode;

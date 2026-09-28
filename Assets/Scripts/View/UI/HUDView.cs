@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 public class HUDView
 {
     public ConstructionMenuView ConstructionMenu { get; private set; }
+    public TaskMenuView TaskMenu { get; private set; }
 
     VisualElement resourcesContainer;
     Dictionary<Resource, Label> resourceCounters = new Dictionary<Resource, Label>();
@@ -16,6 +17,7 @@ public class HUDView
     public HUDView(VisualElement root, VisualTreeAsset resourceCountTemplate, VisualTreeAsset constructionMenuItemTemplate)
     {
         ConstructionMenu = new ConstructionMenuView(root.Q("ConstructionMenu"), constructionMenuItemTemplate);
+        TaskMenu = new TaskMenuView(root.Q("TaskMenu"), constructionMenuItemTemplate);
 
         resourcesContainer = root.Q<VisualElement>("Resources");
         this.resourceCountTemplate = resourceCountTemplate;
