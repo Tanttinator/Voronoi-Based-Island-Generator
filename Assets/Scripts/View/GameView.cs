@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using StudioIda.Math;
+using StudioIda.RTSCamera;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,7 @@ public class GameView
 {
     public HUDView HUD { get; private set; }
     public TerrainView Terrain { get; private set; }
+    public RTSCamera CameraRig { get; private set; }
 
     Dictionary<int, TaskZoneIndicatorView> taskZoneIndicators = new Dictionary<int, TaskZoneIndicatorView>();
 
@@ -26,6 +28,8 @@ public class GameView
         Terrain = resources.Terrain;
         Terrain.HideTileOutline();
 
+        CameraRig = resources.CameraRig;
+
         taskZoneIndicatorPrefab = resources.TaskZoneIndicator;
     }
 
@@ -34,6 +38,11 @@ public class GameView
         foreach (Resource resource in HUD.DisplayResources)
             HUD.UpdateResourceCounter(resource, state.GetResource(resource));
         Terrain.GenerateTerrain(state.Map);
+
+        Rectangle area = state.Map.Area;
+        CameraRig.SetBounds(new Rect(area.BottomLeft.x, area.BottomLeft.y, area.Width, area.Height));
+        CameraRig.SetPosition(new Vector3(area.Center.x, 0f, area.Center.y));
+        CameraRig.SetZoom(0.5f);
     }
 
     public int GetHoveredTile()

@@ -358,9 +358,87 @@ MonoBehaviour:
   viewResources:
     HUD: {fileID: 1769714148}
     Terrain: {fileID: 1164302796}
+    CameraRig: {fileID: 1604188607}
     TaskZoneIndicator: {fileID: 5437567893759799284, guid: 31b13cdc76c0d9643ae67f4fccbbf07f, type: 3}
     ResourceCountTemplate: {fileID: 9197481963319205126, guid: 7ad5b669c39822e4098ae80df9bffc11, type: 3}
     ConstructionMenuItemTemplate: {fileID: 9197481963319205126, guid: c6e45914a4c97eb48b77386a562d8e99, type: 3}
+--- !u!1001 &182630201
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 568883690373759688, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: maxZoom
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 568883690373759688, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: minZoom
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 568883690373759688, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: maxZoomAngle
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 892089376150703807, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_Name
+      value: RTS Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960069238202817653, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960069238202817653, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960069238202817653, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960069238202817653, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960069238202817653, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960069238202817653, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960069238202817653, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960069238202817653, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960069238202817653, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960069238202817653, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3809231595572024546, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1756173454}
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+--- !u!4 &182630202 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3809231595572024546, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+  m_PrefabInstance: {fileID: 182630201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &734417302
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,6 +595,7 @@ MonoBehaviour:
   coastLayer: {fileID: 1958742368}
   tileOutline: {fileID: 127247945}
   treePrefab: {fileID: 8309413292703217114, guid: 9fa019bd1f213774f8f714a7c7a5347d, type: 3}
+  boulderPrefab: {fileID: 0}
   grassColor: {r: 0.6666667, g: 0.63529414, b: 0.25490198, a: 1}
   sandColor: {r: 0.9764706, g: 0.8784314, b: 0.68235296, a: 1}
   coastColor: {r: 0.51400006, g: 0.8473718, b: 1, a: 1}
@@ -752,6 +831,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1164302795}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1604188607 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 568883690373759688, guid: 3882da62b7c4c9c4baa82d7668cd4461, type: 3}
+  m_PrefabInstance: {fileID: 182630201}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdc2cf6583b9a2944a20bafabe00267b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTSCamera
 --- !u!1 &1756173451
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,13 +928,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756173451}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.48389348, y: 0, z: 0, w: 0.87512696}
-  m_LocalPosition: {x: 0, y: 7, z: -6}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 37.65, y: 0, z: 0}
+  m_Father: {fileID: 182630202}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1756173455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1053,7 +1143,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 138714229}
   - {fileID: 1769714149}
-  - {fileID: 1756173454}
+  - {fileID: 182630201}
   - {fileID: 1297045145}
   - {fileID: 1164302795}
   - {fileID: 34689705}

@@ -1,4 +1,5 @@
 using System;
+using StudioIda.RTSCamera;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,6 +9,7 @@ public class GameViewResources
     [Header("References")]
     public UIDocument HUD;
     public TerrainView Terrain;
+    public RTSCamera CameraRig;
 
     [Header("Prefabs")]
     public GameObject TaskZoneIndicator;

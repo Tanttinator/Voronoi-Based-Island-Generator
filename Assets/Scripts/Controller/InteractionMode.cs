@@ -28,10 +28,36 @@ public abstract class InteractionMode
 
 public class DefaultInteractionMode : InteractionMode
 {
+    Vector3 dragOrigin;
+
     public override void Start()
     {
         View.HUD.ConstructionMenu.OnBuildingSelected += OnBuildingSelected;
         View.HUD.TaskMenu.OnTaskSelected += OnTaskSelected;
+    }
+
+    public override GameCommand Update()
+    {
+        int tileId = View.GetHoveredTile();
+        if (tileId != -1)
+            View.Terrain.ShowTileOutline(tileId);
+        else
+            View.Terrain.HideTileOutline();
+
+        View.CameraRig.Zoom(-Input.Scroll * Time.deltaTime * 10f);
+
+        if (Input.Clicked)
+        {
+            dragOrigin = Input.MouseWorldPos;
+        }
+        if (Input.Held)
+        {
+            Vector3 currentPos = Input.MouseWorldPos;
+            Vector3 diff = dragOrigin - currentPos;
+            View.CameraRig.Move(diff);
+        }
+
+        return GameCommand.None;
     }
 
     public override void End()
