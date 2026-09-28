@@ -31,7 +31,7 @@ public class GameController
         Rectangle area = new Rectangle(new Point(minX, minY), new Point(maxX, maxY));
         model.State.Map.SetArea(area);
 
-        TileState[] tiles = WorldGeneration.GenerateTiles(area, config.Forest, config.Boulders, config.Berries);
+        TileState[] tiles = WorldGeneration.GenerateTiles(area, config.WorldGenerationSettings);
         model.State.Map.SetTiles(tiles);
 
         int[][] adjacencies = WorldGeneration.GenerateAdjacencies(tiles);

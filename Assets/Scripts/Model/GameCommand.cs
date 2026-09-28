@@ -54,6 +54,10 @@ public class PlaceGatheringZoneCommand : GameCommand
     {
         if (tileId == -1) yield break;
 
+        TileState tile = state.Map.Tiles[tileId];
+
+        if (!tile.HasFeature) yield break;
+
         state.AddGatheringZone(tileId);
         yield return new GatheringZonePlacedEvent { TileId = tileId };
     }

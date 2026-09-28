@@ -6,9 +6,7 @@ public class GameConfig : ScriptableObject
     [Header("Model")]
     public Building[] Buildings;
 
-    public Feature Forest;
-    public Feature Boulders;
-    public Feature Berries;
+    public WorldGenerationSettings WorldGenerationSettings;
 
     public float GatheringZoneDuration;
     public float ClearingZoneDuration;
