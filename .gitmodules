@@ -1,3 +1,6 @@
 [submodule "Assets/Modules/Ida-Library"]
 	path = Assets/Modules/Ida-Library
 	url = git@github.com:Studio-Ida/Ida-Library.git
+[submodule "Assets/Modules/RTS-Camera"]
+	path = Assets/Modules/RTS-Camera
+	url = git@github.com:Studio-Ida/RTS-Camera.git
